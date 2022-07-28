@@ -2,6 +2,7 @@ from .models import User
 from rest_framework import serializers
 from django.contrib.auth.hashers import make_password
 from dj_rest_auth.registration.serializers import RegisterSerializer
+from dj_rest_auth.serializers import LoginSerializer
 
 class UserSerializers(serializers.HyperlinkedModelSerializer):
 
@@ -29,5 +30,8 @@ class CustomRegisterSerializer(RegisterSerializer):
         data['nickname'] = self.validated_data.get('nickname', '')
         data['birthday'] = self.validated_data.get('birthday', '')
         return data
+
+# class CustomLoginSerializer(LoginSerializer):
+
 
 
