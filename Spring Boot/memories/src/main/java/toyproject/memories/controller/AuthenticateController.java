@@ -25,17 +25,26 @@ public class AuthenticateController {
     @PostMapping("/login")
     public Result authorize(@Valid @RequestBody LoginDto loginDto) {
 
+        System.out.println("로그인 Dto를 통해 인증 토큰을 생성합니다..");
+
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(loginDto.getName(), loginDto.getPassword());
 
+        System.out.println("생성한 인증 토큰으로 인증을 진행합니다..");
+
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+
+        System.out.println("인증이 완료되어 context에 인증 정보를 저장합니다..");
+
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         String jwt = tokenProvider.createToken(authentication);
 
+        System.out.println("헤더에 jwt 토큰을 추가합니다..");
+
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
 
-        return new Result(SuccessOrFail.SUCCESS, jwt);
+        return new Result(resultEnum.SUCCESS, jwt);
     }
 }

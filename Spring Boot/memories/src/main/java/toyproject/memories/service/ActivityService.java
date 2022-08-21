@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -98,31 +99,31 @@ public class ActivityService {
         int size = stringTags.size();
 
         List<ActivityTagRelation>[] relations = new List[size];
-        List<Activity> activities = new ArrayList<>();
-        for (int i = 0; i < size; i++) {
-            System.out.println(stringTags.get(i));
-            relations[i] = activityRepository.findByTag(stringTags.get(i));
-        }
+        List<Activity> activities = activityRepository.findByTag(stringTags);
+//        for (int i = 0; i < size; i++) {
+//            System.out.println(stringTags.get(i));
+//            relations[i] = activityRepository.findByTag(stringTags.get(i));
+//        }
+//
+//        for(ActivityTagRelation relation : relations[0]){
+//            activities.add(relation.getActivity());
+//        }
+//
+//        for (int i = 1; i < size; i++) {
+//            List<Activity> commonActivities = new ArrayList<>();
+//            for(Activity activity : activities){
+//                for(ActivityTagRelation relation : relations[i]){
+//                    if(activity == relation.getActivity())
+//                        commonActivities.add(activity);
+//                }
+//            }
+//            activities = commonActivities;
+//        }
+//
+        List<ActivityReturnDto> returnDtos = activities.stream().
+                map(a -> new ActivityReturnDto(a))
+                .collect(Collectors.toList());
 
-        for(ActivityTagRelation relation : relations[0]){
-            activities.add(relation.getActivity());
-        }
-
-        for (int i = 1; i < size; i++) {
-            List<Activity> commonActivities = new ArrayList<>();
-            for(Activity activity : activities){
-                for(ActivityTagRelation relation : relations[i]){
-                    if(activity == relation.getActivity())
-                        commonActivities.add(activity);
-                }
-            }
-            activities = commonActivities;
-        }
-
-        List<ActivityReturnDto> returnDtos = new ArrayList<>();
-        for(Activity activity : activities){
-            returnDtos.add(new ActivityReturnDto(activity));
-        }
         response = createMap.successMap(returnDtos);
         return response;
     }

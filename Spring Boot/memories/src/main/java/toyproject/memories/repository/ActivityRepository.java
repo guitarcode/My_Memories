@@ -27,10 +27,17 @@ public class ActivityRepository {
         return entityManager.find(Activity.class,activityId);
     }
 
-    public List<ActivityTagRelation> findByTag(String content){
-        return entityManager.createQuery(
-                "select r from ActivityTagRelation as r where r.tag.content = :content")
-                .setParameter("content",content)
+    public List<Activity> findByTag(List<String> contents){
+        System.out.println("쿼리문 생성");
+
+        return entityManager.createQuery("select r.activity " +
+                "from ActivityTagRelation r " +
+                "inner join Tag as t on t = r.tag " +
+                "where t.content in :contents "+
+                "group by r.activity.id " +
+                "having count(r.tag) >= :num ", Activity.class )
+                .setParameter("contents", contents)
+                .setParameter("num", contents.size())
                 .getResultList();
     }
 }

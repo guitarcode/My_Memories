@@ -54,6 +54,8 @@ public class TokenProvider implements InitializingBean {
     //Authentication 은 로그인 정보, 즉 사용자의 정보라고 볼 수 있다. 그러므로 Authority 정보도 해당 객체에 담겨있을 것이다.
     //유저 정보와 Authority 정보를 담아 토큰을 만드는 것인 것 같다.
     public String createToken(Authentication authentication){
+        System.out.println("토큰을 생성합니다.");
+
         String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
@@ -69,7 +71,7 @@ public class TokenProvider implements InitializingBean {
                 .compact();
     }
 
-    //token을 인자로 받아 디코딩하여 유저 객체를 생성하고 해당 유저가 어떤 Authorization을 가지고 있는지 확인한다.
+    //token을 인자로 받아 디코딩하여 유저 객체를 생성하고 해당 유저가 어떤 Authorrity를 가지고 있는지 확인한다.
     public Authentication getAuthentication(String token){
         Claims claims = Jwts
                 .parserBuilder()
@@ -77,6 +79,8 @@ public class TokenProvider implements InitializingBean {
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
+
+        System.out.println("토큰으로부터 권한정보를 불러옵니다.");
 
         Collection<? extends GrantedAuthority> authorities =
                 Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
@@ -92,6 +96,7 @@ public class TokenProvider implements InitializingBean {
     public boolean validateToken(String token) {
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
+            System.out.println("토큰이 유효합니다.");
             return true;
         } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
             logger.info("잘못된 JWT 서명입니다.");

@@ -7,7 +7,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter @Setter
 public class Result<T> {
-    private SuccessOrFail result;
+    private resultEnum result;
     private T data;
 }
 

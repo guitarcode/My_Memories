@@ -3,7 +3,6 @@ package toyproject.memories.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import toyproject.memories.domain.Member;
 import toyproject.memories.dto.MemberSignupDto;
@@ -20,6 +19,6 @@ public class MemberController {
     @PostMapping("/member")
     public Result signup(@Valid @RequestBody MemberSignupDto memberSignupDto){
         Member member = memberService.signup(memberSignupDto);
-        return new Result(SuccessOrFail.SUCCESS, member);
+        return new Result(resultEnum.SUCCESS, member);
     }
 }

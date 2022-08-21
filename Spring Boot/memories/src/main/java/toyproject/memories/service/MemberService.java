@@ -23,19 +23,13 @@ public class MemberService {
             throw new RuntimeException("이미 가입되어있는 유저입니다.");
         }
 
-        Authority authority = Authority.USER;
-
         Member member = new Member();
         member.setName(memberSignupDto.getName());
         member.setPassword(passwordEncoder.encode(memberSignupDto.getPassword()));
         member.setBirthDate(memberSignupDto.getBirthDate());
-        member.setAuthority(Authority.USER);
+        member.setAuthority(Authority.ROLE_USER);
         member.setActivate(true);
 
         return memberRepository.saveMember(member);
     }
-
-
-
-
 }

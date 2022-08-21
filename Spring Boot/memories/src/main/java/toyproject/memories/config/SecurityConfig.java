@@ -68,7 +68,6 @@ public class SecurityConfig{
                 .authorizeRequests()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/member").permitAll()
-
                 .anyRequest().authenticated()
 
                 .and()

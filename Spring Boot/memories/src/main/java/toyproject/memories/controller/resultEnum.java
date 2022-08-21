@@ -3,6 +3,6 @@ package toyproject.memories.controller;
 import lombok.Getter;
 
 @Getter
-public enum SuccessOrFail {
+public enum resultEnum {
     SUCCESS, FAIL
 }

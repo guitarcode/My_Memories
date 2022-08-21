@@ -2,6 +2,7 @@ package toyproject.memories.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import toyproject.memories.domain.memory.Activity;
 import toyproject.memories.dto.ActivityCreateDto;
@@ -16,24 +17,23 @@ public class ActivityController {
 
     private final ActivityService activityService;
 
-     @GetMapping("/api")
-    public ResponseEntity<String> api(){
-        return ResponseEntity.ok("ok");
-    }
-
 
     @PostMapping("/activity")
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     public Map<String, Object> createActivity(@RequestBody ActivityCreateDto activityCreateDto){
+        System.out.println("액티비티 생성을 시작합니다.");
         return activityService.createActivity(activityCreateDto);
     }
 
     @GetMapping("/activity")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public Map<String, Object> readAllActivity(){
         return activityService.findAll();
     }
 
-    @GetMapping("/activity/")
-    public Map<String,Object> readActivityByTags(@RequestParam(value = "tagString") String tagString){
-        return activityService.findByTags(tagString);
+    @GetMapping("/activity/search")
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
+    public Map<String,Object> readActivityByTags(@RequestParam(value = "query") String query){
+        return activityService.findByTags(query);
     }
 }

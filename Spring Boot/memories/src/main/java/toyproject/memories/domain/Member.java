@@ -32,6 +32,4 @@ public class Member {
 
     @OneToMany (mappedBy = "member")
     private List<Activity> activities = new ArrayList<>();
-
-
 }
