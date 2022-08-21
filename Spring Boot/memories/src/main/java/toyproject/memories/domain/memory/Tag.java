@@ -1,4 +1,4 @@
-package toyproject.memories.domain;
+package toyproject.memories.domain.memory;
 
 import lombok.Getter;
 import lombok.Setter;

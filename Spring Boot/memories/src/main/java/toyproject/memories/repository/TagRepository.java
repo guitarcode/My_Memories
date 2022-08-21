@@ -2,7 +2,7 @@ package toyproject.memories.repository;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-import toyproject.memories.domain.Tag;
+import toyproject.memories.domain.memory.Tag;
 
 import javax.persistence.EntityManager;
 

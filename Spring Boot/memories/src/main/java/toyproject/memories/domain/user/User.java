@@ -1,9 +1,10 @@
-package toyproject.memories.domain;
+package toyproject.memories.domain.user;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 import toyproject.memories.domain.memory.Activity;
+import toyproject.memories.domain.schedule.Schedule;
+import toyproject.memories.domain.schedule.ScheduleItem;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -11,11 +12,11 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "member")
+@Table(name = "user")
 @Getter @Setter
-public class Member {
+public class User {
     @Id @GeneratedValue
-    @Column(name = "member_id")
+    @Column(name = "user_id")
     private Long id;
 
     private String name;
@@ -30,6 +31,12 @@ public class Member {
 
     private boolean isActivate;
 
-    @OneToMany (mappedBy = "member")
+    @OneToMany (mappedBy = "user")
     private List<Activity> activities = new ArrayList<>();
+
+    @OneToMany (mappedBy = "user")
+    private List<Schedule> schedules;
+
+    @OneToMany (mappedBy = "user")
+    private List<ScheduleItem> scheduleInventories;
 }

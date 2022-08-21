@@ -2,9 +2,7 @@ package toyproject.memories.domain.memory;
 
 import lombok.Getter;
 import lombok.Setter;
-import toyproject.memories.domain.ActivityTagRelation;
-import toyproject.memories.domain.Member;
-import toyproject.memories.domain.Tag;
+import toyproject.memories.domain.user.User;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -31,7 +29,7 @@ public abstract class Activity {
     private List<ActivityTagRelation> tags = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private Member member;
+    private User user;
 
     public void addRelation(ActivityTagRelation activityTagRelation){
         tags.add(activityTagRelation);

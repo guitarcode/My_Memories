@@ -1,8 +1,7 @@
 package toyproject.memories.dto;
 
 import lombok.Getter;
-import toyproject.memories.domain.ActivityTagRelation;
-import toyproject.memories.domain.Tag;
+import toyproject.memories.domain.memory.ActivityTagRelation;
 import toyproject.memories.domain.memory.Activity;
 
 import java.util.ArrayList;

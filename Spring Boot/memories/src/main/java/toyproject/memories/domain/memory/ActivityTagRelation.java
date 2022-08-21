@@ -1,10 +1,9 @@
-package toyproject.memories.domain;
+package toyproject.memories.domain.memory;
 
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import toyproject.memories.domain.memory.Activity;
 
 import javax.persistence.*;
 

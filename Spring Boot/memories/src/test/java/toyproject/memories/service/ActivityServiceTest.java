@@ -1,15 +1,6 @@
 package toyproject.memories.service;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import toyproject.memories.domain.ActivityTagRelation;
-import toyproject.memories.domain.Tag;
-import toyproject.memories.dto.ActivityCreateDto;
-import toyproject.memories.repository.ActivityRepository;
-import toyproject.memories.repository.TagRepository;
-
-import java.util.List;
 
 @SpringBootTest
 class ActivityServiceTest {
