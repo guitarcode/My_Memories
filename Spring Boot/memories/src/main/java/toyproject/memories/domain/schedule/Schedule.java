@@ -3,6 +3,7 @@ package toyproject.memories.domain.schedule;
 import toyproject.memories.domain.user.User;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Entity
@@ -12,6 +13,7 @@ public class Schedule {
     @Column(name = "schedule_id")
     private Long id;
 
+    @NotNull
     private String name;
 
     @Column(name = "sub_name")
@@ -22,6 +24,7 @@ public class Schedule {
 
     @Column(name = "end_time")
     private LocalDateTime endTime;
+
 
     @Enumerated(EnumType.STRING)
     private Property property;

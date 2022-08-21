@@ -20,9 +20,9 @@ public class UserRepository {
     }
 
     public Optional<User> findByName(String name){
-        List<User> user = entityManager.createQuery("select m from User as m where m.name = :name", User.class)
+        Optional<User> user = entityManager.createQuery("select u from User as u where u.username = :name", User.class)
                 .setParameter("name",name)
-                .getResultList();
-        return user.stream().findAny();
+                .getResultList().stream().findAny();
+        return user;
     }
 }

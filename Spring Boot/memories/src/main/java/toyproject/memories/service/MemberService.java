@@ -24,7 +24,7 @@ public class MemberService {
         }
 
         User user = new User();
-        user.setName(memberSignupDto.getName());
+        user.setUsername(memberSignupDto.getName());
         user.setPassword(passwordEncoder.encode(memberSignupDto.getPassword()));
         user.setBirthDate(memberSignupDto.getBirthDate());
         user.setAuthority(Authority.ROLE_USER);

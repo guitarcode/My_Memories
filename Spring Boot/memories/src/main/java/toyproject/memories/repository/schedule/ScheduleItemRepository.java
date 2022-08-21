@@ -8,7 +8,7 @@ import javax.persistence.EntityManager;
 
 @Repository
 @RequiredArgsConstructor
-public class ScheduleStorageRepository {
+public class ScheduleItemRepository {
     private final EntityManager em;
 
     public Long save(ScheduleItem scheduleItem){

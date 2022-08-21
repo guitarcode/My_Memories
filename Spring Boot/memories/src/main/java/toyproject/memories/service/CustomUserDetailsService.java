@@ -24,8 +24,9 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(final String name) {
         System.out.println("id를 통해 유저 정보를 불러옵니다..");
 
+
         return userRepository.findByName(name)
-                .map(member -> createUser(name, member))
+                .map(user -> createUser(name, user))
                 .orElseThrow(() -> new UsernameNotFoundException(name + " -> 데이터베이스에서 찾을 수 없습니다."));
     }
 
@@ -36,7 +37,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(user.getAuthority().toString());
 
-        return new org.springframework.security.core.userdetails.User(user.getName(),
+        return new org.springframework.security.core.userdetails.User(user.getUsername(),
                 user.getPassword(),
                 Collections.singleton(grantedAuthority));
     }
