@@ -21,11 +21,6 @@ public class ScheduleItem {
     @Column(name = "schedule_item_id")
     private Long id;
 
-    private String name;
-
-    @Column(name = "sub_name")
-    private String subName;
-
     @Column(name = "start_time")
     private LocalTime startTime;
 
@@ -42,14 +37,20 @@ public class ScheduleItem {
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "schedule_storage_id")
+    private ScheduleStorage storage;
+
     @Builder
-    public ScheduleItem(String name, String subName, LocalTime startTime, LocalTime endTime, DayOfWeek dayOfWeek, Property property, User user) {
-        this.name = name;
-        this.subName = subName;
+    public ScheduleItem(LocalTime startTime, LocalTime endTime, DayOfWeek dayOfWeek, Property property, User user) {
         this.startTime = startTime;
         this.endTime = endTime;
         this.dayOfWeek = dayOfWeek;
         this.property = property;
         this.user = user;
+    }
+
+    protected void setStorage(ScheduleStorage scheduleStorage){
+        this.storage = scheduleStorage;
     }
 }

@@ -26,8 +26,6 @@ public class ScheduleItemService {
         User user = userRepository.findByName(username).orElse(null);
 
         ScheduleItem scheduleItem = ScheduleItem.builder()
-                .name(scheduleItemCreateDto.getName())
-                .subName(scheduleItemCreateDto.getSubName())
                 .startTime(scheduleItemCreateDto.getStartTime())
                 .endTime(scheduleItemCreateDto.getEndTime())
                 .dayOfWeek(DayOfWeek.valueOf(scheduleItemCreateDto.getDayOfWeek()))
