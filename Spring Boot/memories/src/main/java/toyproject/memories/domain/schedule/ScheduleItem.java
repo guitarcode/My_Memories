@@ -50,7 +50,8 @@ public class ScheduleItem {
         this.user = user;
     }
 
-    protected void setStorage(ScheduleStorage scheduleStorage){
+    protected void setStorageAndUser(ScheduleStorage scheduleStorage){
         this.storage = scheduleStorage;
+        this.user = scheduleStorage.getUser();
     }
 }

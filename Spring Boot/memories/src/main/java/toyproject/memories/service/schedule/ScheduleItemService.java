@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import toyproject.memories.domain.schedule.Property;
 import toyproject.memories.domain.schedule.ScheduleItem;
 import toyproject.memories.domain.user.User;
-import toyproject.memories.dto.schedule.ScheduleItemCreateDto;
+import toyproject.memories.dto.schedule.ScheduleItemCreateAndReturnDto;
 import toyproject.memories.repository.UserRepository;
 import toyproject.memories.repository.schedule.ScheduleItemRepository;
 
@@ -21,15 +21,15 @@ public class ScheduleItemService {
     private final UserRepository userRepository;
 
     @Transactional
-    public Long createScheduleItem(ScheduleItemCreateDto scheduleItemCreateDto, String username){
+    public Long createScheduleItem(ScheduleItemCreateAndReturnDto scheduleItemCreateAndReturnDto, String username){
 
         User user = userRepository.findByName(username).orElse(null);
 
         ScheduleItem scheduleItem = ScheduleItem.builder()
-                .startTime(scheduleItemCreateDto.getStartTime())
-                .endTime(scheduleItemCreateDto.getEndTime())
-                .dayOfWeek(DayOfWeek.valueOf(scheduleItemCreateDto.getDayOfWeek()))
-                .property(Property.valueOf(scheduleItemCreateDto.getProperty()))
+                .startTime(scheduleItemCreateAndReturnDto.getStartTime())
+                .endTime(scheduleItemCreateAndReturnDto.getEndTime())
+                .dayOfWeek(DayOfWeek.valueOf(scheduleItemCreateAndReturnDto.getDayOfWeek()))
+                .property(Property.valueOf(scheduleItemCreateAndReturnDto.getProperty()))
                 .user(user)
                 .build();
 

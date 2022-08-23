@@ -3,8 +3,6 @@ package toyproject.memories.repository.schedule;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import toyproject.memories.domain.schedule.ScheduleStorage;
-import toyproject.memories.dto.schedule.ScheduleItemCreateDto;
-import toyproject.memories.dto.schedule.ScheduleStorageCreateDto;
 import toyproject.memories.dto.schedule.ScheduleStorageReturnDto;
 
 import javax.persistence.EntityManager;

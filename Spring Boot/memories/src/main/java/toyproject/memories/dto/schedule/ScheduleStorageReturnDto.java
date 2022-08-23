@@ -10,10 +10,10 @@ import java.util.stream.Collectors;
 
 @Getter
 public class ScheduleStorageReturnDto {
-    private Long storage_id;
-    private String name;
-    private String subName;
-    private List<ScheduleItemReturnDto> scheduleItems;
+    private final Long storage_id;
+    private final String name;
+    private final String subName;
+    private final List<ScheduleItemCreateAndReturnDto> scheduleItems;
 
     @Builder
     public ScheduleStorageReturnDto(ScheduleStorage scheduleStorage) {
@@ -21,7 +21,7 @@ public class ScheduleStorageReturnDto {
         this.name = scheduleStorage.getName();
         this.subName = scheduleStorage.getSubName();
         this.scheduleItems = scheduleStorage.getScheduleItems().stream()
-                .map(item -> new ScheduleItemReturnDto(item))
+                .map(item -> new ScheduleItemCreateAndReturnDto(item))
                 .collect(Collectors.toList());
     }
 }

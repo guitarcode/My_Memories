@@ -1,5 +1,6 @@
 package toyproject.memories.domain.schedule;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -25,20 +26,21 @@ public class ScheduleStorage {
     @Column(name = "sub_name")
     private String subName;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
     @OneToMany(mappedBy = "storage", cascade = CascadeType.ALL)
     private List<ScheduleItem> scheduleItems = new ArrayList<>();
 
-    public ScheduleStorage(String name, String sub_name, User user){
+    public ScheduleStorage(String name, String sub_name){
         this.name = name;
         this.subName = sub_name;
-        this.user = user;
+//        this.user = user;
     }
 
     public void addScheduleItem(ScheduleItem scheduleItem){
         this.scheduleItems.add(scheduleItem);
-        scheduleItem.setStorage(this);
+        scheduleItem.setStorageAndUser(this);
     }
 }
