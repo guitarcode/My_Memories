@@ -7,8 +7,6 @@ import lombok.NoArgsConstructor;
 import toyproject.memories.domain.user.User;
 
 import javax.persistence.*;
-import java.time.DayOfWeek;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Entity
@@ -21,15 +19,19 @@ public class ScheduleItem {
     @Column(name = "schedule_item_id")
     private Long id;
 
+    @Column(name = "start_day")
+    @Enumerated(EnumType.ORDINAL)
+    private DayOfWeek startDay;
+
+    @Column(name = "end_day")
+    @Enumerated(EnumType.ORDINAL)
+    private DayOfWeek endDay;
+
     @Column(name = "start_time")
     private LocalTime startTime;
 
     @Column(name = "end_time")
     private LocalTime endTime;
-
-    @Column(name = "day_of_week")
-    @Enumerated(EnumType.STRING)
-    private DayOfWeek dayOfWeek;
 
     @Enumerated(EnumType.STRING)
     private Property property;
@@ -42,10 +44,11 @@ public class ScheduleItem {
     private ScheduleStorage storage;
 
     @Builder
-    public ScheduleItem(LocalTime startTime, LocalTime endTime, DayOfWeek dayOfWeek, Property property, User user) {
+    public ScheduleItem(LocalTime startTime, LocalTime endTime, DayOfWeek startDay, DayOfWeek endDay, Property property, User user) {
         this.startTime = startTime;
         this.endTime = endTime;
-        this.dayOfWeek = dayOfWeek;
+        this.startDay = startDay;
+        this.endDay = endDay;
         this.property = property;
         this.user = user;
     }

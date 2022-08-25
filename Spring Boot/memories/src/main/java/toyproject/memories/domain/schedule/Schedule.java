@@ -20,17 +20,17 @@ public class Schedule {
     private String subName;
 
     @Column(name = "start_time")
-    private LocalDateTime startTime;
+    private LocalDateTime startDateTime;
 
     @Column(name = "end_time")
-    private LocalDateTime endTime;
+    private LocalDateTime endDateTime;
 
 
     @Enumerated(EnumType.STRING)
     private Property property;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private ScheduleItem scheduleItem;
+    private ScheduleStorage scheduleStorage;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
