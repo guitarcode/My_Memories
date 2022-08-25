@@ -69,25 +69,34 @@ export default {
         handleEvents(events) {
             this.currentEvents = events
         },
+
         saveItems(){
             var events = this.currentEvents
-            var items = []
-            for(let event of events){
-                items.push({
-                    "name": event._def.title,
-                    "start": event._instance.range.start,
-                    "end":event._instance.range.end,
-                })
-            }
-            // }
-            var ScheduleStorageDto= {
+            const items = events.map(function(event){
+                var item = {};
+
+                const startInfo = event._instance.range.start.toString().split(" ");
+                const endInfo = event._instance.range.end.toString().split(" ");
+
+                item.name = event._def.title;
+                item.stratDay = startInfo[0];
+                item.startTime = startInfo[4];
+                item.endDay = endInfo[0];
+                item.endTime = endInfo[4];
+
+                return item;
+            })
+
+            console.log(items)
+
+            var scheduleStorageData = {
                 "name": "test",
-                "items": items
+                "scheduleItems": items
             }
-            console.log(JSON.stringify(ScheduleStorageDto))
+
             let url = "http://localhost:8080/schedule/storage"
             
-            axios.post(url, JSON.stringify(ScheduleStorageDto), {
+            axios.post(url, JSON.stringify(scheduleStorageData), {
                 headers: { "Content-Type": "application/json" }
             }) 
             .then(function(response){
