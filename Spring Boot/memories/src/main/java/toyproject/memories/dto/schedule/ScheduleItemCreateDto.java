@@ -11,10 +11,11 @@ import java.time.format.DateTimeFormatter;
 @Getter
 @NoArgsConstructor
 public class ScheduleItemCreateAndReturnDto {
+    private String name;
     private String startTime;
     private String endTime;
-    private String startDay;
     private String endDay;
+    private String startDay;
     private String property;
 
     public LocalTime startTimeParse(){
@@ -28,10 +29,11 @@ public class ScheduleItemCreateAndReturnDto {
     }
 
     public ScheduleItemCreateAndReturnDto(ScheduleItem scheduleItem) {
+        this.name = scheduleItem.getName();
         this.startTime = scheduleItem.getStartTime().toString();
         this.endTime = scheduleItem.getEndTime().toString();
         this.startDay = scheduleItem.getStartDay().name();
         this.endDay = scheduleItem.getEndDay().name();
-        this.property = scheduleItem.getProperty().name();
+//        this.property = scheduleItem.getProperty().name();
     }
 }

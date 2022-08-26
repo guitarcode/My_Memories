@@ -26,6 +26,7 @@ export default {
         plugins: [ timeGridPlugin, interactionPlugin ],
         initialView: 'timeGridWeek',
         headerToolbar: false,
+        allDaySlot : false,
         dayHeaderFormat:{
             weekday: 'short'
         },
@@ -79,7 +80,7 @@ export default {
                 const endInfo = event._instance.range.end.toString().split(" ");
 
                 item.name = event._def.title;
-                item.stratDay = startInfo[0];
+                item.startDay = startInfo[0];
                 item.startTime = startInfo[4];
                 item.endDay = endInfo[0];
                 item.endTime = endInfo[4];
