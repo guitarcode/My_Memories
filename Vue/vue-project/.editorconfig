@@ -1,0 +1,11 @@
+[*.{js,jsx,ts,tsx,vue}]
+
+# 들여쓰기를 공백으로 2칸 하는 설정
+indent_style = space
+indent_size = 2
+
+# 문자 앞 공백 제거
+trim_trailing_whitespace = true
+
+# 파일의 끝은 새로운 줄로 마침
+insert_final_newline = true

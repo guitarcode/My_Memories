@@ -1,13 +1,12 @@
 <template>
-  <header>
-    <h1>Header</h1>
-  </header>
+  <div id="HomeVue">
+    Home
+  </div>
 </template>
 
 <script>
-
 export default {
-
+  // name: "HomeVue"
 }
 </script>
 

@@ -1,24 +1,29 @@
 <template>
-  <div>
-    <app-header></app-header>
-    <schedule-storage-create></schedule-storage-create>
+  <div id="app">
+    <tool-bar @drawerset="drawerset" />
+    <side-navi-bar ref="sideNavi" />
   </div>
 </template>
 
 <script>
-import AppHeader from './components/AppHeader.vue';
-import ScheduleStorageCreate from './components/ScheduleStorageCreate.vue'
-export default {
-    data: function(){
-      return{
-        str: 'hi!!!'
+import SideNaviBar from './components/SideNaviBar.vue';
+import ToolBar from './components/ToolBar.vue';
+  export default {
+    name: "App",
+    components: { ToolBar , SideNaviBar},
+
+    data (){
+      return {
+        // drawer: false,
       }
     },
-    components: {
-      AppHeader,
-        ScheduleStorageCreate
+    methods: {
+      drawerset: function() {
+        console.log("event")
+        this.$refs.sideNavi.drawer = !this.$refs.sideNavi.drawer
+      }
     }
-}
+  }
 </script>
 
 <style>

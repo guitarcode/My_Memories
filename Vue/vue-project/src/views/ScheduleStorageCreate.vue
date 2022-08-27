@@ -1,9 +1,10 @@
 <template>
-    <div id="createitems">
-        <button v-on:click="saveItems">Save</button>
-        <FullCalendar :options="calendarOptions">
-        </FullCalendar>
-    </div>
+  <div id="createitems">
+    <button @click="saveItems">
+      Save
+    </button>
+    <FullCalendar :options="calendarOptions" />
+  </div>
 </template>
 
 <script>
@@ -11,11 +12,11 @@ import '@fullcalendar/core/vdom' // solves problem with Vite
 import FullCalendar from '@fullcalendar/vue'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
-import { INITIAL_EVENTS } from '../event-utils'
 import axios from 'axios'
 
 export default {
 
+    // name: "ScheduleStorageCreate",
   components: {
     FullCalendar// make the <FullCalendar> tag available
   },
@@ -37,7 +38,6 @@ export default {
             hour12: true
         },
         dateClick: this.handleDateclick,
-      initialEvents: INITIAL_EVENTS,
       editable: true,
       droppable: true,
       selectable: true,
