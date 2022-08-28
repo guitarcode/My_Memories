@@ -33,10 +33,10 @@ public class ScheduleStorage {
     @OneToMany(mappedBy = "storage", cascade = CascadeType.ALL)
     private List<ScheduleItem> scheduleItems = new ArrayList<>();
 
-    public ScheduleStorage(String name, String sub_name){
+    public ScheduleStorage(String name, String sub_name, User user){
         this.name = name;
         this.subName = sub_name;
-//        this.user = user;
+        this.user = user;
     }
 
     public void addScheduleItem(ScheduleItem scheduleItem){

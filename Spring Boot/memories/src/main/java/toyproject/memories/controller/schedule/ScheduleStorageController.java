@@ -14,17 +14,14 @@ import toyproject.memories.service.schedule.ScheduleStorageService;
 
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:8081/")
 public class ScheduleStorageController {
 
     private final ScheduleStorageService scheduleStorageService;
 
     @PostMapping("/schedule/storage")
-//    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ScheduleStorageReturnDto create(@RequestBody ScheduleStorageCreateDto scheduleStorageCreateDto
-//                                           ,@AuthenticationPrincipal User user
-    ){
-        System.out.println("뭐가문젠데");
-        return scheduleStorageService.createScheduleStorage(scheduleStorageCreateDto);
+                                           ,@AuthenticationPrincipal User user){
+        return scheduleStorageService.createScheduleStorage(scheduleStorageCreateDto, user.getUsername());
     }
 }

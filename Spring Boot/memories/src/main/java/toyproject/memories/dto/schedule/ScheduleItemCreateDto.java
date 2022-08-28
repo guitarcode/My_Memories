@@ -2,7 +2,6 @@ package toyproject.memories.dto.schedule;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import toyproject.memories.domain.schedule.ScheduleItem;
 
 import java.time.LocalTime;
@@ -10,7 +9,7 @@ import java.time.format.DateTimeFormatter;
 
 @Getter
 @NoArgsConstructor
-public class ScheduleItemCreateAndReturnDto {
+public class ScheduleItemCreateDto {
     private String name;
     private String startTime;
     private String endTime;
@@ -28,7 +27,7 @@ public class ScheduleItemCreateAndReturnDto {
         return LocalTime.parse(this.endTime, formatter);
     }
 
-    public ScheduleItemCreateAndReturnDto(ScheduleItem scheduleItem) {
+    public ScheduleItemCreateDto(ScheduleItem scheduleItem) {
         this.name = scheduleItem.getName();
         this.startTime = scheduleItem.getStartTime().toString();
         this.endTime = scheduleItem.getEndTime().toString();

@@ -6,6 +6,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,6 +14,8 @@ import toyproject.memories.dto.LoginDto;
 import toyproject.memories.jwt.JwtFilter;
 import toyproject.memories.jwt.TokenProvider;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 @RestController
@@ -23,7 +26,7 @@ public class AuthenticateController {
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
     @PostMapping("/login")
-    public Result authorize(@Valid @RequestBody LoginDto loginDto) {
+    public Result authorize(HttpServletResponse response, @Valid @RequestBody LoginDto loginDto) {
 
         System.out.println("로그인 Dto를 통해 인증 토큰을 생성합니다..");
 

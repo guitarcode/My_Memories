@@ -7,7 +7,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import toyproject.memories.dto.schedule.ScheduleItemCreateAndReturnDto;
+import toyproject.memories.dto.schedule.ScheduleItemCreateDto;
 import toyproject.memories.service.schedule.ScheduleItemService;
 
 @RestController
@@ -18,8 +18,8 @@ public class ScheduleController {
 
     @PostMapping("/scheduleitem")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public Long create(@RequestBody ScheduleItemCreateAndReturnDto scheduleItemCreateAndReturnDto,
+    public Long create(@RequestBody ScheduleItemCreateDto scheduleItemCreateDto,
                        @AuthenticationPrincipal User user){
-        return scheduleItemService.createScheduleItem(scheduleItemCreateAndReturnDto,user.getUsername());
+        return scheduleItemService.createScheduleItem(scheduleItemCreateDto,user.getUsername());
     }
 }

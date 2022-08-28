@@ -7,7 +7,7 @@ import toyproject.memories.domain.schedule.DayOfWeek;
 import toyproject.memories.domain.schedule.Property;
 import toyproject.memories.domain.schedule.ScheduleItem;
 import toyproject.memories.domain.user.User;
-import toyproject.memories.dto.schedule.ScheduleItemCreateAndReturnDto;
+import toyproject.memories.dto.schedule.ScheduleItemCreateDto;
 import toyproject.memories.repository.UserRepository;
 import toyproject.memories.repository.schedule.ScheduleItemRepository;
 
@@ -21,16 +21,16 @@ public class ScheduleItemService {
     private final UserRepository userRepository;
 
     @Transactional
-    public Long createScheduleItem(ScheduleItemCreateAndReturnDto scheduleItemCreateAndReturnDto, String username){
+    public Long createScheduleItem(ScheduleItemCreateDto scheduleItemCreateDto, String username){
 
         User user = userRepository.findByName(username).orElse(null);
 
         ScheduleItem scheduleItem = ScheduleItem.builder()
-                .startTime(scheduleItemCreateAndReturnDto.startTimeParse())
-                .endTime(scheduleItemCreateAndReturnDto.endTimeParse())
-                .startDay(DayOfWeek.valueOf(scheduleItemCreateAndReturnDto.getStartDay()))
-                .endDay(DayOfWeek.valueOf(scheduleItemCreateAndReturnDto.getEndDay()))
-                .property(Property.valueOf(scheduleItemCreateAndReturnDto.getProperty()))
+                .startTime(scheduleItemCreateDto.startTimeParse())
+                .endTime(scheduleItemCreateDto.endTimeParse())
+                .startDay(DayOfWeek.valueOf(scheduleItemCreateDto.getStartDay()))
+                .endDay(DayOfWeek.valueOf(scheduleItemCreateDto.getEndDay()))
+                .property(Property.valueOf(scheduleItemCreateDto.getProperty()))
                 .user(user)
                 .build();
 

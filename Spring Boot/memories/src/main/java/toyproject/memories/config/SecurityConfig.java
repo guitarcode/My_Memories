@@ -9,10 +9,16 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.CorsUtils;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import toyproject.memories.jwt.JwtAccessDeniedHandler;
 import toyproject.memories.jwt.JwtAuthenticationEntryPoint;
 import toyproject.memories.jwt.JwtSecurityConfig;
 import toyproject.memories.jwt.TokenProvider;
+
+import java.util.Arrays;
 
 @EnableWebSecurity
 //PreAuthorize 어노테이션을 메서드별로 사용하기 위해 추가
@@ -40,7 +46,7 @@ public class SecurityConfig{
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer(){
         return web -> web.ignoring()
-                .antMatchers("/assets/**", "/h2-console/**");
+                .antMatchers("/assets/**", "/h2-console/**" );
     }
 
     @Bean
@@ -52,6 +58,9 @@ public class SecurityConfig{
                 .exceptionHandling()
                 .authenticationEntryPoint(jwtAuthenticationEntryPoint)
                 .accessDeniedHandler(jwtAccessDeniedHandler)
+
+                .and()
+                .cors()
 
                 // enable h2-console
                 .and()
@@ -66,9 +75,9 @@ public class SecurityConfig{
 
                 .and()
                 .authorizeRequests()
+//                .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/member").permitAll()
-                .antMatchers("/schedule/**").permitAll()
                 .anyRequest().authenticated()
 
                 .and()
@@ -76,4 +85,5 @@ public class SecurityConfig{
 
         return http.build();
     }
+
 }
