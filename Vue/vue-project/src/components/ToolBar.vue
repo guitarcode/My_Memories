@@ -1,11 +1,27 @@
 <template>
-  <v-toolbar
-    id="header"
-    color="green"
-    elevation="4"
+  <v-app-bar
+    app
   >
     <v-app-bar-nav-icon @click.stop="showSideBar" />
-  </v-toolbar>
+    <v-spacer />
+    <v-btn
+      color="accent"
+      elevation="4"
+      outlined
+      to="/signup"
+    >
+      Sign up
+    </v-btn>
+
+    <v-btn
+      color="accent"
+      elevation="4"
+      outlined
+      to="/login"
+    >
+      Log in
+    </v-btn>
+  </v-app-bar>
 </template>
 <script>
 
