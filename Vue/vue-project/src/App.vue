@@ -15,6 +15,7 @@
 <script>
 import SideNaviBar from './components/SideNaviBar.vue';
 import ToolBar from './components/ToolBar.vue';
+import axiosInst from './api';
 
   export default {
     name: "App",

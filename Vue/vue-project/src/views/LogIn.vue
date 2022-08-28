@@ -108,8 +108,7 @@ import { required, digits, email, min, max, regex } from 'vee-validate/dist/rule
           headers: { "Content-Type": "application/json" }
         })
         .then(function(response){
-          console.log("bearer"+response.data.data)
-          self.$store.dispatch('setToken',"bearer"+response.data.data)
+          self.$store.dispatch('setToken',"Bearer "+response.data.data)
           self.$router.push('/')
         })
         .catch(function(error){

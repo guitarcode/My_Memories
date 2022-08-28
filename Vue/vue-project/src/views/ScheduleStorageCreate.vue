@@ -13,6 +13,7 @@ import FullCalendar from '@fullcalendar/vue'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import axios from 'axios'
+import axiosInst from '@/api'
 
 export default {
 
@@ -51,7 +52,7 @@ export default {
   }
   },
 
-    methods: { 
+    methods: {
         handleDateSelect(selectInfo) {
             let title = prompt("hello");
             let calendarApi = selectInfo.view.calendar;
@@ -95,11 +96,10 @@ export default {
                 "scheduleItems": items
             }
 
-            let url = "http://localhost:8080/schedule/storage"
-            
-            axios.post(url, JSON.stringify(scheduleStorageData), {
-                headers: { "Content-Type": "application/json" }
-            }) 
+            let url = "schedule/storage"
+
+            axiosInst.post(url, JSON.stringify(scheduleStorageData), {
+            })
             .then(function(response){
                 console.log(response)
             })
