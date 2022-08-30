@@ -50,12 +50,6 @@ export default {
       return this.$store.getters.getToken
     }
   },
-  watch:{
-    isAuth(val){
-      console.log("watch")
-      this.isAuth = val;
-    }
-  },
   methods: {
     showSideBar() {
       this.$emit('drawerset')

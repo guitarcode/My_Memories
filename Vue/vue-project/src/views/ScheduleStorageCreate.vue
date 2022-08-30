@@ -155,7 +155,7 @@ export default {
             })
             .then((response) => {
                 console.log(response)
-                this.$router.push("/")
+                this.$router.push("/schedule/storage")
             })
             .catch(function(error) {
                 console.log(error)
