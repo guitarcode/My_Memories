@@ -9,9 +9,12 @@ import toyproject.memories.domain.schedule.ScheduleStorage;
 import toyproject.memories.domain.user.User;
 import toyproject.memories.dto.schedule.ScheduleItemCreateDto;
 import toyproject.memories.dto.schedule.ScheduleStorageCreateDto;
+import toyproject.memories.dto.schedule.ScheduleStorageListDto;
 import toyproject.memories.dto.schedule.ScheduleStorageReturnDto;
 import toyproject.memories.repository.UserRepository;
 import toyproject.memories.repository.schedule.ScheduleStorageRepository;
+
+import java.util.List;
 
 
 @Service
@@ -49,5 +52,10 @@ public class ScheduleStorageService {
         }
 
         return scheduleStorageRepository.save(scheduleStorage);
+    }
+
+    public List<ScheduleStorageListDto> storageList(String username){
+        User user = userRepository.findByName(username).orElse(null);
+        return scheduleStorageRepository.findAllByUser(user);
     }
 }

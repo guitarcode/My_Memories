@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-
 public class ScheduleStorageCreateDto {
     private String name;
     private String subName;
