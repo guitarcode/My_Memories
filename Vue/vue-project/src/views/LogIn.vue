@@ -12,7 +12,7 @@
         >
           <v-text-field
             v-model="form.name"
-            :counter="10"
+            :counter="20"
             :error-messages="errors"
             label="ID"
             required
@@ -25,7 +25,6 @@
           >
             <v-text-field
               v-model="form.password"
-              counter="20"
               type="password"
               label="Password"
               name="input-10-1"
@@ -100,6 +99,10 @@ import { required, digits, email, min, max, regex } from 'vee-validate/dist/rule
     }),
 
     methods: {
+      clear() {
+        this.form['password'] = ""
+        this.$refs.observer.reset()
+      },
       submit () {
         let url = "http://localhost:8080/login"
         let self = this
@@ -111,8 +114,9 @@ import { required, digits, email, min, max, regex } from 'vee-validate/dist/rule
           self.$store.dispatch('setToken',"Bearer "+response.data.data)
           self.$router.push('/')
         })
-        .catch(function(error){
-          console.log(error)
+        .catch(() => {
+          this.clear()
+          alert("존재하지 않는 회원 정보입니다.")
         })
       },
     }

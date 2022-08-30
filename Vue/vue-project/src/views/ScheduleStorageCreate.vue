@@ -1,9 +1,64 @@
 <template>
   <div id="createitems">
-    <button @click="saveItems">
-      Save
-    </button>
     <FullCalendar :options="calendarOptions" />
+    <!-- dialog 창 부분 -->
+    <v-row justify="space-around">
+      <v-col cols="auto">
+        <v-dialog
+          transition="dialog-bottom-transition"
+          max-width="400"
+        >
+          <template #activator="{ on, attrs }">
+            <v-btn
+              color="primary"
+              v-bind="attrs"
+              v-on="on"
+            >
+              Create it!
+            </v-btn>
+          </template>
+          <template #default="dialog">
+            <v-card>
+              <v-toolbar
+                color="primary"
+                dark
+              >
+                Create Schedule Storage
+              </v-toolbar>
+              <v-col
+                cols="12"
+                sm="6"
+                md="9"
+              >
+                <v-text-field
+                  :value="title"
+                  :counter="20"
+                  label="Title"
+                  required
+                  @blur="title=$event.target.value"
+                />
+              </v-col>
+              <v-card-actions class="justify-end">
+                <v-btn
+                  text
+                  @click="saveItems"
+                >
+                  Save
+                </v-btn>
+              </v-card-actions>
+              <v-card-actions class="justify-end">
+                <v-btn
+                  text
+                  @click="dialog.value = false"
+                >
+                  Close
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          </template>
+        </v-dialog>
+      </v-col>
+    </v-row>
   </div>
 </template>
 
@@ -12,7 +67,6 @@ import '@fullcalendar/core/vdom' // solves problem with Vite
 import FullCalendar from '@fullcalendar/vue'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
-import axios from 'axios'
 import axiosInst from '@/api'
 
 export default {
@@ -22,7 +76,7 @@ export default {
     FullCalendar// make the <FullCalendar> tag available
   },
 
-  data: function() {
+  data() {
     return {
       calendarOptions: {
         plugins: [ timeGridPlugin, interactionPlugin ],
@@ -46,10 +100,9 @@ export default {
       select: this.handleDateSelect,
       eventsSet: this.handleEvents
     },
-    currentEvents: [
-
-    ]
-  }
+    currentEvents: [],
+    title: "",
+    }
   },
 
     methods: {
@@ -92,7 +145,7 @@ export default {
             console.log(items)
 
             var scheduleStorageData = {
-                "name": "test",
+                "title": this.title,
                 "scheduleItems": items
             }
 
@@ -100,8 +153,9 @@ export default {
 
             axiosInst.post(url, JSON.stringify(scheduleStorageData), {
             })
-            .then(function(response){
+            .then((response) => {
                 console.log(response)
+                this.$router.push("/")
             })
             .catch(function(error) {
                 console.log(error)

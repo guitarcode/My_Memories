@@ -40,7 +40,7 @@ const router = new VueRouter({
 })
 
 router.beforeEach( async(to, from, next) => {
-  if (to.matched.some(record => record.meta.unauthorized || VueCookies.get('accessToken'))){
+  if (to.matched.some(record => record.meta.unauthorized || VueCookies.isKey('accessToken'))){
     return next();
   }
   else{

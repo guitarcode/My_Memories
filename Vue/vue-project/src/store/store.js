@@ -14,22 +14,24 @@ export default new Vuex.Store({
     },
     getToken(state){
       return state.accessToken;
-    },
-    removeToken(state){
-      VueCookies.remove('accessToken')
-      accessToken = null;
     }
   },
   mutations: {
-
     setToken(state, newToken){
       VueCookies.set('accessToken', newToken, '86400s');
-      state.token = newToken;
+      state.accessToken = newToken;
+    },
+    removeToken(state){
+      VueCookies.remove('accessToken')
+      state.accessToken = null;
     }
   },
   actions: {
     setToken:({commit}, newToken) => {
       commit('setToken', newToken);
+    },
+    removeToken:({commit}) => {
+      commit('removeToken');
     }
   }
 })
