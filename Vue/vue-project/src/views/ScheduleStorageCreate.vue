@@ -125,6 +125,10 @@ export default {
             this.currentEvents = events
         },
 
+        // parseEvent(){
+
+        // }
+
         saveItems(){
             var events = this.currentEvents
             const items = events.map(function(event){

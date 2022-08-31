@@ -17,6 +17,9 @@ export default new Vuex.Store({
     }
   },
   mutations: {
+    hasToken(state){
+      state.accessToken = VueCookies.isKey('accessToken')
+    },
     setToken(state, newToken){
       VueCookies.set('accessToken', newToken, '86400s');
       state.accessToken = newToken;
