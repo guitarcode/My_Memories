@@ -17,7 +17,6 @@ new Vue({
   axiosInst,
 
   beforeCreate(){
-    console.log("create 작동")
     this.$store.commit("hasToken")
   },
   render: h => h(App)

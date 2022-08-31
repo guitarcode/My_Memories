@@ -92,10 +92,13 @@ export default {
             second: '2-digit',
             hour12: true
         },
+        initialDate:'2022-08-24',
+        events: [],
         dateClick: this.handleDateclick,
-      editable: true,
-      droppable: true,
-      selectable: true,
+
+      editable: false,
+      droppable: false,
+      selectable: false,
     //   eventsSet:
       select: this.handleDateSelect,
       eventsSet: this.handleEvents
@@ -104,6 +107,23 @@ export default {
     title: "",
     }
   },
+    beforeCreate() {
+      const id = this.$route.query.id
+      const url = "schedule/storage/"+id
+      axiosInst.get(url)
+      .then((response) => {
+        const resData = response.data
+        const items = resData.items
+
+        console.log(this.calendar)
+
+        let events = this.parseItem(items)
+        this.calendarOptions.events = events
+      })
+      .catch((error)=>{
+        console.log(error)
+      })
+    },
 
     methods: {
         handleDateSelect(selectInfo) {
@@ -122,9 +142,67 @@ export default {
             }
         },
         handleEvents(events) {
-            this.currentEvents = events
+          this.currentEvents = events
         },
+        parseItem(items){
+          let events = []
+          console.log(typeof(items))
+            items.map((item) => {
+              let start
+              let end
+              if(item.startDay == "Mon"){
+                start = "2022-08-22"
+              }
+              else if (item.startDay == "Tue"){
+                start = "2022-08-23"
+              }
+              else if (item.startDay == "Wed"){
+                start = "2022-08-24"
+              }
+              else if (item.startDay == "Thu"){
+                start = "2022-08-25"
+              }
+              else if (item.startDay == "Fri"){
+                start = "2022-08-26"
+              }
+              else if (item.startDay == "Sat"){
+                start = "2022-08-27"
+              }
+              else {
+                start = "2022-08-21"
+              }
 
+              if(item.endDay == "Mon"){
+                end = "2022-08-22"
+              }
+              else if (item.endDay == "Tue"){
+                end = "2022-08-23"
+              }
+              else if (item.endDay == "Wed"){
+                end = "2022-08-24"
+              }
+              else if (item.endDay == "Thu"){
+                end = "2022-08-25"
+              }
+              else if (item.endDay == "Fri"){
+                end = "2022-08-26"
+              }
+              else if (item.endDay == "Sat"){
+                end = "2022-08-27"
+              }
+              else {
+                end = "2022-08-21"
+              }
+              events.push({
+                title: item.title,
+                start: start+"T"+item.startTime+"-06:00",
+                end: end+"T"+item.endTime,
+                allDay: false
+              })
+            })
+
+          return events;
+        },
         parseEvent(){
           const items = this.currentEvents.map(event=>{
             let item = {};
@@ -132,7 +210,7 @@ export default {
             const startInfo = event._instance.range.start.toString().split(" ");
             const endInfo = event._instance.range.end.toString().split(" ");
 
-            item.title = event._def.title;
+            item.name = event._def.title;
             item.startDay = startInfo[0];
             item.startTime = startInfo[4];
             item.endDay = endInfo[0];

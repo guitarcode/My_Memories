@@ -4,6 +4,7 @@ import VueCookies from 'vue-cookies'
 import HomeVue from '@/views/HomeVue'
 import ScheduleStorageList from '@/views/ScheduleStorageList'
 import ScheduleStorageCreate from '@/views/ScheduleStorageCreate'
+import ScheduleStorageDetail from '@/views/ScheduleStorageDetail'
 import SignUp from '@/views/SignUp'
 import LogIn from '@/views/LogIn'
 
@@ -38,6 +39,11 @@ const routes = [
       name: 'ScheduleStorageList',
       component: ScheduleStorageList
     },
+    {
+      path: '/schedule/storage/detail',
+      name: "ScheduleStorageDetail",
+      component: ScheduleStorageDetail
+    }
 ]
 
 const router = new VueRouter({

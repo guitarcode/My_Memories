@@ -10,6 +10,7 @@
     <v-card
       v-for="storage in storageList"
       :key="storage.title"
+      @click="$router.push({path:'/schedule/storage/detail', query: {id: storage.id}})"
     >
       {{ storage.title }}
     </v-card>
