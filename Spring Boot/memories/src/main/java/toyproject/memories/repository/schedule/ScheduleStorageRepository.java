@@ -30,4 +30,12 @@ public class ScheduleStorageRepository {
                 .collect(Collectors.toList());
 
     }
+
+    public List<ScheduleStorage> findOne(Long id, User user){
+        return em.createQuery("select ss from ScheduleStorage ss " +
+                "where ss.id = :id and ss.user.id = :userId")
+                .setParameter("id", id)
+                .setParameter("userId",user.getId())
+                .getResultList();
+    }
 }

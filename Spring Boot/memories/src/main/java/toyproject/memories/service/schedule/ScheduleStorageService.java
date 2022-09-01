@@ -32,7 +32,7 @@ public class ScheduleStorageService {
 
 
         ScheduleStorage scheduleStorage = new ScheduleStorage(
-                scheduleStorageCreateDto.getName(),
+                scheduleStorageCreateDto.getTitle(),
                 scheduleStorageCreateDto.getSubName(),
                 user);
 
@@ -40,7 +40,7 @@ public class ScheduleStorageService {
         for(ScheduleItemCreateDto scheduleItem : scheduleStorageCreateDto.getScheduleItems()){
             System.out.println("스케쥴 시작일:" + scheduleItem.getStartDay());
             ScheduleItem scheduleItemEntity = ScheduleItem.builder()
-                    .name(scheduleItem.getName())
+                    .name(scheduleItem.getTitle())
                     .startTime(scheduleItem.startTimeParse())
                     .endTime(scheduleItem.endTimeParse())
                     .startDay(DayOfWeek.valueOf(scheduleItem.getStartDay()))
@@ -57,5 +57,16 @@ public class ScheduleStorageService {
     public List<ScheduleStorageListDto> storageList(String username){
         User user = userRepository.findByName(username).orElse(null);
         return scheduleStorageRepository.findAllByUser(user);
+    }
+
+    public ScheduleStorageReturnDto storageDetail(Long id, String username){
+        User user = userRepository.findByName(username).orElse(null);
+
+        List<ScheduleStorage> storageReturn = scheduleStorageRepository.findOne(id,user);
+
+        if(!storageReturn.isEmpty())
+            return new ScheduleStorageReturnDto(storageReturn.stream().findAny().orElse(null));
+        else
+            throw new RuntimeException();
     }
 }

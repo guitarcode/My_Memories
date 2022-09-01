@@ -83,6 +83,8 @@ export default {
         initialView: 'timeGridWeek',
         headerToolbar: false,
         allDaySlot : false,
+        eventOverlap: false,
+        selectOverlap: false,
         dayHeaderFormat:{
             weekday: 'short'
         },

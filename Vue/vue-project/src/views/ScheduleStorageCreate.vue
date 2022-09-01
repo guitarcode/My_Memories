@@ -82,7 +82,9 @@ export default {
         plugins: [ timeGridPlugin, interactionPlugin ],
         initialView: 'timeGridWeek',
         headerToolbar: false,
-        allDaySlot : false,
+        allDaySlot: false,
+        eventOverlap: false,
+        selectOverlap: false,
         dayHeaderFormat:{
             weekday: 'short'
         },

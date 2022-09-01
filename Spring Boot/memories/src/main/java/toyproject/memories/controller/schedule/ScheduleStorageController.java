@@ -26,8 +26,15 @@ public class ScheduleStorageController {
     }
 
     @GetMapping("/schedule/storage")
-    @PreAuthorize("hasAnyRole('USER')")
-    public List<ScheduleStorageListDto> scheduleList(@AuthenticationPrincipal User user){
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public List<ScheduleStorageListDto> storageList(@AuthenticationPrincipal User user){
         return scheduleStorageService.storageList(user.getUsername());
+    }
+
+    @GetMapping("/schedule/storage/{storageId}")
+    @PreAuthorize("hasAnyRole('USER')")
+    public ScheduleStorageReturnDto storageDetail(@PathVariable("storageId") Long id,
+                                                          @AuthenticationPrincipal User user){
+        return scheduleStorageService.storageDetail(id, user.getUsername());
     }
 }

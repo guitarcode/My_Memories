@@ -7,7 +7,7 @@ import java.util.List;
 
 @Getter
 public class ScheduleStorageCreateDto {
-    private String name;
+    private String title;
     private String subName;
     private List<ScheduleItemCreateDto> scheduleItems = new ArrayList<>();
 }

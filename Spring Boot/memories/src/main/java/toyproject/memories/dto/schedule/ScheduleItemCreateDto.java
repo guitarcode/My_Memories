@@ -10,7 +10,7 @@ import java.time.format.DateTimeFormatter;
 @Getter
 @NoArgsConstructor
 public class ScheduleItemCreateDto {
-    private String name;
+    private String title;
     private String startTime;
     private String endTime;
     private String endDay;
@@ -28,7 +28,7 @@ public class ScheduleItemCreateDto {
     }
 
     public ScheduleItemCreateDto(ScheduleItem scheduleItem) {
-        this.name = scheduleItem.getName();
+        this.title = scheduleItem.getName();
         this.startTime = scheduleItem.getStartTime().toString();
         this.endTime = scheduleItem.getEndTime().toString();
         this.startDay = scheduleItem.getStartDay().name();

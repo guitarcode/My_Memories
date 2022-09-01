@@ -12,14 +12,14 @@ public class ScheduleStorageReturnDto {
     private final Long storage_id;
     private final String name;
     private final String subName;
-    private final List<ScheduleItemCreateDto> scheduleItems;
+    private final List<ScheduleItemCreateDto> items;
 
     @Builder
     public ScheduleStorageReturnDto(ScheduleStorage scheduleStorage) {
         this.storage_id = scheduleStorage.getId();
         this.name = scheduleStorage.getName();
         this.subName = scheduleStorage.getSubName();
-        this.scheduleItems = scheduleStorage.getScheduleItems().stream()
+        this.items = scheduleStorage.getScheduleItems().stream()
                 .map(item -> new ScheduleItemCreateDto(item))
                 .collect(Collectors.toList());
     }
