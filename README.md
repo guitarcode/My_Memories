@@ -1,2 +1,2 @@
 # My_Memories
-Django 토이 프로젝트
+Spring, Django, Vue 토이 프로젝트
