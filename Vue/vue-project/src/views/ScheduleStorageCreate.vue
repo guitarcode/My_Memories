@@ -1,79 +1,36 @@
 <template>
-  <div id="createitems">
-    <FullCalendar :options="calendarOptions" />
+  <div id="main">
+    <v-container class="py-14">
+      <v-row justify="center">
+        <v-col>
+          <FullCalendar :options="calendarOptions" />
+        </v-col>
+      </v-row>
+    </v-container>
+
     <!-- dialog 창 부분 -->
-    <v-row justify="space-around">
-      <v-col cols="auto">
-        <v-dialog
-          transition="dialog-bottom-transition"
-          max-width="400"
-        >
-          <template #activator="{ on, attrs }">
-            <v-btn
-              color="primary"
-              v-bind="attrs"
-              v-on="on"
-            >
-              Create it!
-            </v-btn>
-          </template>
-          <template #default="dialog">
-            <v-card>
-              <v-toolbar
-                color="primary"
-                dark
-              >
-                Create Schedule Storage
-              </v-toolbar>
-              <v-col
-                cols="12"
-                sm="6"
-                md="9"
-              >
-                <v-text-field
-                  :value="title"
-                  :counter="20"
-                  label="Title"
-                  required
-                  @blur="title=$event.target.value"
-                />
-              </v-col>
-              <v-card-actions class="justify-end">
-                <v-btn
-                  text
-                  @click="saveItems"
-                >
-                  Save
-                </v-btn>
-              </v-card-actions>
-              <v-card-actions class="justify-end">
-                <v-btn
-                  text
-                  @click="dialog.value = false"
-                >
-                  Close
-                </v-btn>
-              </v-card-actions>
-            </v-card>
-          </template>
-        </v-dialog>
-      </v-col>
-    </v-row>
+    <schedule-item-dialog
+      ref="itemDialog"
+      @createEvent="createEvent"
+    />
+    <schedule-storage-dialog @saveItems="saveItems" />
   </div>
 </template>
 
 <script>
 import '@fullcalendar/core/vdom' // solves problem with Vite
 import FullCalendar from '@fullcalendar/vue'
+import ScheduleStorageDialog from './ScheduleStorageDialog.vue'
+import ScheduleItemDialog from './ScheduleItemDialog.vue'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import axiosInst from '@/api'
 
 export default {
-
-    // name: "ScheduleStorageCreate",
   components: {
-    FullCalendar// make the <FullCalendar> tag available
+    FullCalendar,
+    ScheduleItemDialog,
+    ScheduleStorageDialog// make the <FullCalendar> tag available
   },
 
   data() {
@@ -104,24 +61,36 @@ export default {
     },
     currentEvents: [],
     title: "",
+    selectInfo: {}
     }
   },
 
     methods: {
         handleDateSelect(selectInfo) {
-            let title = prompt("hello");
-            let calendarApi = selectInfo.view.calendar;
+          this.selectInfo = selectInfo
+          console.log(this.selectInfo)
+          this.$refs.itemDialog.dialogActivate()
+        },
+        createEvent(title, importance) {
+            let calendarApi = this.selectInfo.view.calendar;
 
+            console.log(calendarApi)
             calendarApi.unselect()
 
             if(title) {
                 calendarApi.addEvent({
-                    title,
-                    start: selectInfo.startStr,
-                    end: selectInfo.endStr,
-                    allDay: selectInfo.allDay
+                    title: title,
+                    start: this.selectInfo.startStr,
+                    end: this.selectInfo.endStr,
+                    allDay: this.selectInfo.allDay,
+                    extendedProps: {
+                      importance: importance
+                    }
                 })
             }
+
+            console.log()
+            this.selectInfo = {}
         },
         handleEvents(events) {
             this.currentEvents = events
@@ -139,19 +108,18 @@ export default {
             item.startTime = startInfo[4];
             item.endDay = endInfo[0];
             item.endTime = endInfo[4];
+            item.importance = event._def.extendedProps.importance
             return item;
             })
 
             return items;
         },
 
-        saveItems(){
-
+        saveItems(title){
             const items = this.parseEvent();
-            console.log(items);
 
             const scheduleStorageItem = {
-                "title": this.title,
+                "title": title,
                 "scheduleItems": items
             }
 
@@ -172,7 +140,5 @@ export default {
 
 </script>
 <style>
-    #createitems {
-        margin: 100px
-    }
+
 </style>
