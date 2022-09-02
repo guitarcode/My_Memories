@@ -1,49 +1,66 @@
 <template>
-  <v-container>
-    <validation-observer
-      ref="observer"
-      v-slot="{ invalid }"
+  <v-row
+    justify="center"
+  >
+    <v-col
+      sm="6"
+      align-self="center"
+      class="py-18"
     >
-      <form @submit.prevent="submit">
-        <validation-provider
-          v-slot="{ errors }"
-          name="ID"
-          rules="required|max:10"
-        >
-          <v-text-field
-            v-model="form.name"
-            :counter="20"
-            :error-messages="errors"
-            label="ID"
-            required
-          />
-
-          <validation-provider
-            v-slot="{ errors }"
-            name="password"
-            rules="required"
+      <v-card>
+        <v-card-title class="blue">
+          LOGIN
+        </v-card-title>
+        <v-container>
+          <validation-observer
+            ref="observer"
+            v-slot="{ invalid }"
           >
-            <v-text-field
-              v-model="form.password"
-              type="password"
-              label="Password"
-              name="input-10-1"
-              :error-messages="errors"
-              required
-            />
-          </validation-provider>
+            <form @submit.prevent="submit">
+              <validation-provider
+                v-slot="{ errors }"
+                name="ID"
+                rules="required|max:10"
+              >
+                <v-text-field
+                  v-model="form.name"
+                  :counter="20"
+                  :error-messages="errors"
+                  label="ID"
+                  required
+                />
 
-          <v-btn
-            class="mr-4"
-            type="submit"
-            :disabled="invalid"
-          >
-            Log in
-          </v-btn>
-        </validation-provider>
-      </form>
-    </validation-observer>
-  </v-container>
+                <validation-provider
+                  v-slot="{ errors }"
+                  name="password"
+                  rules="required"
+                >
+                  <v-text-field
+                    v-model="form.password"
+                    type="password"
+                    label="Password"
+                    name="input-10-1"
+                    :error-messages="errors"
+                    required
+                  />
+                </validation-provider>
+                <v-card-actions
+                  class="justify-end"
+                >
+                  <v-btn
+                    type="submit"
+                    :disabled="invalid"
+                  >
+                    Log in
+                  </v-btn>
+                </v-card-actions>
+              </validation-provider>
+            </form>
+          </validation-observer>
+        </v-container>
+      </v-card>
+    </v-col>
+  </v-row>
 </template>
 
 <script>

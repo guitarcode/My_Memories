@@ -1,59 +1,74 @@
 /<template>
-  <v-row justify="space-around">
+  <v-row justify="end">
     <v-col cols="auto">
       <v-dialog
         transition="dialog-bottom-transition"
         max-width="400"
       >
-        <template #activator="{ on, attrs }">
+        <template
+          #activator="{ on, attrs }"
+        >
           <v-btn
             color="primary"
             v-bind="attrs"
+
             v-on="on"
           >
-            Create it!
+            Save
           </v-btn>
         </template>
         <template #default="dialog">
-          <v-card>
+          <v-card class="overflow-hidden">
             <v-toolbar
               color="primary"
               dark
             >
               Create Schedule Storage
             </v-toolbar>
-            <v-col
-              cols="12"
-              sm="6"
-              md="9"
+            <v-row
+              justify="center"
             >
-              <v-text-field
-                :value="title"
-                :counter="20"
-                label="Title"
-                required
-                @blur="title=$event.target.value"
-              />
-            </v-col>
+              <v-col
+                cols="12"
+                sm="6"
+                md="9"
+              >
+                <v-text-field
+                  :value="title"
+                  :counter="20"
+                  label="Title"
+                  required
+                  @blur="title=$event.target.value"
+                />
+              </v-col>
+            </v-row>
             <v-row
               justify="end"
             >
-              <v-card-actions class="justify-end">
-                <v-btn
-                  text
-                  @click="saveItems"
+              <v-col>
+                <v-card-actions
+                  class="justify-end"
                 >
-                  Save
-                </v-btn>
-              </v-card-actions>
-              <v-card-actions class="justify-end">
-                <v-btn
-                  text
-                  @click="dialog.value = false"
+                  <v-btn
+                    text
+                    @click="saveItems"
+                  >
+                    Save
+                  </v-btn>
+                </v-card-actions>
+              </v-col>
+              <v-col>
+                <v-card-actions
+                  class="justify-end"
                 >
-                  Close
-                </v-btn>
-              </v-card-actions>
+                  <v-btn
+                    text
+                    @click="dialog.value = false"
+                  >
+                    Close
+                  </v-btn>
+                </v-card-actions>
+              </v-col>
             </v-row>
           </v-card>
         </template>

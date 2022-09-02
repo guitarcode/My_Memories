@@ -7,12 +7,18 @@
     >
       Create it!
     </v-btn>
-    <v-card
-      v-for="storage in storageList"
-      :key="storage.title"
-      @click="$router.push({path:'/schedule/storage/detail', query: {id: storage.id}})"
-    >
-      {{ storage.title }}
+    <v-card>
+      <v-card
+        v-for="storage in storageList"
+        :key="storage.title"
+        outlined
+        width="auto"
+        @click="$router.push({path:'/schedule/storage/detail', query: {id: storage.id}})"
+      >
+        <v-card-title>
+          {{ storage.title }}
+        </v-card-title>
+      </v-card>
     </v-card>
   </div>
 </template>

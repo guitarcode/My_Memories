@@ -1,11 +1,14 @@
 <template>
   <div id="main">
-    <v-container class="py-14">
+    <v-container>
       <v-row justify="center">
         <v-col>
-          <FullCalendar :options="calendarOptions" />
+          <FullCalendar
+            :options="calendarOptions"
+          />
         </v-col>
       </v-row>
+      <schedule-storage-dialog @saveItems="saveItems" />
     </v-container>
 
     <!-- dialog 창 부분 -->
@@ -13,7 +16,6 @@
       ref="itemDialog"
       @createEvent="createEvent"
     />
-    <schedule-storage-dialog @saveItems="saveItems" />
   </div>
 </template>
 
@@ -67,18 +69,17 @@ export default {
 
     methods: {
         handleDateSelect(selectInfo) {
+          let calendarApi = selectInfo.view.calendar;
+          calendarApi.unselect()
+
           this.selectInfo = selectInfo
           console.log(this.selectInfo)
           this.$refs.itemDialog.dialogActivate()
         },
         createEvent(title, importance) {
-            let calendarApi = this.selectInfo.view.calendar;
-
-            console.log(calendarApi)
-            calendarApi.unselect()
 
             if(title) {
-                calendarApi.addEvent({
+                this.selectInfo.view.calendar.addEvent({
                     title: title,
                     start: this.selectInfo.startStr,
                     end: this.selectInfo.endStr,
