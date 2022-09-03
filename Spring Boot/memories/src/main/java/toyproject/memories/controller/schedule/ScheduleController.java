@@ -6,20 +6,25 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import toyproject.memories.dto.schedule.ScheduleItemCreateDto;
-import toyproject.memories.service.schedule.ScheduleItemService;
+import toyproject.memories.domain.schedule.Schedule;
+import toyproject.memories.repository.schedule.WeeklyScheduleCreateDto;
+import toyproject.memories.service.schedule.ScheduleService;
 
+import java.util.List;
+
+@RequestMapping("/api")
 @RestController
 @RequiredArgsConstructor
 public class ScheduleController {
 
-    private final ScheduleItemService scheduleItemService;
+    private final ScheduleService scheduleService;
 
-    @PostMapping("/scheduleitem")
+    @PostMapping("/schedule")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public Long create(@RequestBody ScheduleItemCreateDto scheduleItemCreateDto,
-                       @AuthenticationPrincipal User user){
-        return scheduleItemService.createScheduleItem(scheduleItemCreateDto,user.getUsername());
+    public List<Schedule> createWeeklySchedule(@RequestBody WeeklyScheduleCreateDto weeklyScheduleCreateDto,
+                                 @AuthenticationPrincipal User user){
+        return scheduleService.createWeeklySchedule(weeklyScheduleCreateDto, user.getUsername());
     }
 }

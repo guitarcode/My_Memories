@@ -2,10 +2,8 @@ package toyproject.memories.domain.schedule;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Cascade;
 import toyproject.memories.domain.user.User;
 
 import javax.persistence.*;
@@ -21,10 +19,7 @@ public class ScheduleStorage {
     @Column(name = "schedule_storage_id")
     private Long id;
 
-    private String name;
-
-    @Column(name = "sub_name")
-    private String subName;
+    private String title;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
@@ -33,9 +28,8 @@ public class ScheduleStorage {
     @OneToMany(mappedBy = "storage", cascade = CascadeType.ALL)
     private List<ScheduleItem> scheduleItems = new ArrayList<>();
 
-    public ScheduleStorage(String name, String sub_name, User user){
-        this.name = name;
-        this.subName = sub_name;
+    public ScheduleStorage(String title, User user){
+        this.title = title;
         this.user = user;
     }
 

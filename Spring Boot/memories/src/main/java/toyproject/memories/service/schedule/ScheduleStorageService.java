@@ -3,7 +3,7 @@ package toyproject.memories.service.schedule;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import toyproject.memories.domain.schedule.DayOfWeek;
+import toyproject.memories.domain.schedule.Importance;
 import toyproject.memories.domain.schedule.ScheduleItem;
 import toyproject.memories.domain.schedule.ScheduleStorage;
 import toyproject.memories.domain.user.User;
@@ -14,6 +14,7 @@ import toyproject.memories.dto.schedule.ScheduleStorageReturnDto;
 import toyproject.memories.repository.UserRepository;
 import toyproject.memories.repository.schedule.ScheduleStorageRepository;
 
+import java.time.DayOfWeek;
 import java.util.List;
 
 
@@ -33,19 +34,18 @@ public class ScheduleStorageService {
 
         ScheduleStorage scheduleStorage = new ScheduleStorage(
                 scheduleStorageCreateDto.getTitle(),
-                scheduleStorageCreateDto.getSubName(),
                 user);
 
 
         for(ScheduleItemCreateDto scheduleItem : scheduleStorageCreateDto.getScheduleItems()){
             System.out.println("스케쥴 시작일:" + scheduleItem.getStartDay());
             ScheduleItem scheduleItemEntity = ScheduleItem.builder()
-                    .name(scheduleItem.getTitle())
+                    .title(scheduleItem.getTitle())
                     .startTime(scheduleItem.startTimeParse())
                     .endTime(scheduleItem.endTimeParse())
                     .startDay(DayOfWeek.valueOf(scheduleItem.getStartDay()))
                     .endDay(DayOfWeek.valueOf(scheduleItem.getEndDay()))
-//                    .property(Property.valueOf(scheduleItem.getProperty()))
+                    .importance(Importance.valueOf(scheduleItem.getImportance()))
                     .build();
 
             scheduleStorage.addScheduleItem(scheduleItemEntity);

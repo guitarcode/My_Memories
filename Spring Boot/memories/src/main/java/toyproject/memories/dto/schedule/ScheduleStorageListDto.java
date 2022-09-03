@@ -10,6 +10,6 @@ public class ScheduleStorageListDto{
 
     public ScheduleStorageListDto(ScheduleStorage scheduleStorage){
         this.id = scheduleStorage.getId();
-        this.title = scheduleStorage.getName();
+        this.title = scheduleStorage.getTitle();
     }
 }

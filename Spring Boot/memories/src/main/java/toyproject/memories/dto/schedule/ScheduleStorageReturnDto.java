@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 import toyproject.memories.domain.schedule.ScheduleStorage;
 
+import javax.validation.constraints.NotEmpty;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -11,14 +12,12 @@ import java.util.stream.Collectors;
 public class ScheduleStorageReturnDto {
     private final Long storage_id;
     private final String name;
-    private final String subName;
     private final List<ScheduleItemCreateDto> items;
 
     @Builder
     public ScheduleStorageReturnDto(ScheduleStorage scheduleStorage) {
         this.storage_id = scheduleStorage.getId();
-        this.name = scheduleStorage.getName();
-        this.subName = scheduleStorage.getSubName();
+        this.name = scheduleStorage.getTitle();
         this.items = scheduleStorage.getScheduleItems().stream()
                 .map(item -> new ScheduleItemCreateDto(item))
                 .collect(Collectors.toList());

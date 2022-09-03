@@ -4,6 +4,7 @@ import lombok.*;
 import toyproject.memories.domain.user.User;
 
 import javax.persistence.*;
+import java.time.DayOfWeek;
 import java.time.LocalTime;
 
 @Entity
@@ -17,7 +18,7 @@ public class ScheduleItem {
     @Column(name = "schedule_item_id")
     private Long id;
 
-    private String name;
+    private String title;
 
     @Column(name = "start_day")
     @Enumerated(EnumType.STRING)
@@ -34,7 +35,7 @@ public class ScheduleItem {
     private LocalTime endTime;
 
     @Enumerated(EnumType.STRING)
-    private Property property;
+    private Importance importance;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;

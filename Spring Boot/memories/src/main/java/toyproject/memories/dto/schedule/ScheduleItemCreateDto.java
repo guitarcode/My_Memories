@@ -4,18 +4,30 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import toyproject.memories.domain.schedule.ScheduleItem;
 
+import javax.validation.constraints.NotEmpty;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 @Getter
 @NoArgsConstructor
 public class ScheduleItemCreateDto {
+    @NotEmpty
     private String title;
+
+    @NotEmpty
     private String startTime;
+
+    @NotEmpty
     private String endTime;
+
+    @NotEmpty
     private String endDay;
+
+    @NotEmpty
     private String startDay;
-    private String property;
+
+    @NotEmpty
+    private String importance;
 
     public LocalTime startTimeParse(){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
@@ -28,11 +40,11 @@ public class ScheduleItemCreateDto {
     }
 
     public ScheduleItemCreateDto(ScheduleItem scheduleItem) {
-        this.title = scheduleItem.getName();
+        this.title = scheduleItem.getTitle();
         this.startTime = scheduleItem.getStartTime().toString();
         this.endTime = scheduleItem.getEndTime().toString();
         this.startDay = scheduleItem.getStartDay().name();
         this.endDay = scheduleItem.getEndDay().name();
-//        this.property = scheduleItem.getProperty().name();
+        this.importance = scheduleItem.getImportance().name();
     }
 }

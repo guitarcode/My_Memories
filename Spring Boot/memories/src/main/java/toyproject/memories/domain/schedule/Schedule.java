@@ -1,5 +1,6 @@
 package toyproject.memories.domain.schedule;
 
+import lombok.Builder;
 import toyproject.memories.domain.user.User;
 
 import javax.persistence.*;
@@ -14,10 +15,10 @@ public class Schedule {
     private Long id;
 
     @NotNull
-    private String name;
+    private String title;
 
-    @Column(name = "sub_name")
-    private String subName;
+    @Column(name = "sub_title")
+    private String subTitle;
 
     @Column(name = "start_time")
     private LocalDateTime startDateTime;
@@ -27,11 +28,22 @@ public class Schedule {
 
 
     @Enumerated(EnumType.STRING)
-    private Property property;
+    private Importance importance;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private ScheduleStorage scheduleStorage;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
+
+    @Builder
+    public Schedule(String title, String subTitle, LocalDateTime startDateTime, LocalDateTime endDateTime, Importance importance, ScheduleStorage scheduleStorage, User user) {
+        this.title = title;
+        this.subTitle = subTitle;
+        this.startDateTime = startDateTime;
+        this.endDateTime = endDateTime;
+        this.importance = importance;
+        this.scheduleStorage = scheduleStorage;
+        this.user = user;
+    }
 }

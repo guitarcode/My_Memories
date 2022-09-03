@@ -1,12 +1,10 @@
 package toyproject.memories.domain.schedule;
 
 
-import java.time.DayOfWeek;
+public enum Importance {
+    IMPORTANT, PROMISE, ADJUSTABLE, FREE ;
 
-public enum Property {
-    MUST_DO, PROMISE, CHANGEABLE, FREE ;
-
-    private static final Property[] ENUMS = Property.values();
+    private static final Importance[] ENUMS = Importance.values();
 
 }
 
