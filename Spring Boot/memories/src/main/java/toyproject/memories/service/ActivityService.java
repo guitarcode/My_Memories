@@ -33,7 +33,7 @@ public class ActivityService {
         List<Activity> activities = activityRepository.findAll();
 
         if(activities.isEmpty()) {
-            response = createMap.failMap("저장된 활동이 없습니다. 활동을 생성해주세요. ");
+            response = CreateMap.failMap("저장된 활동이 없습니다. 활동을 생성해주세요. ");
             return response;
         }
         List<ActivityReturnDto> returnDtos = new ArrayList<>();
@@ -41,7 +41,7 @@ public class ActivityService {
             returnDtos.add(new ActivityReturnDto(activity));
         }
 
-        response = createMap.successMap(returnDtos);
+        response = CreateMap.successMap(returnDtos);
         return response;
     }
 
@@ -50,7 +50,7 @@ public class ActivityService {
         Map<String, Object> response;
 
         if(activityCreateDto.getActivityContent() == null){
-            response = createMap.failMap("내용을 입력해주세요.");
+            response = CreateMap.failMap("내용을 입력해주세요.");
             return response;
         }
 
@@ -69,7 +69,7 @@ public class ActivityService {
         activityRepository.save(memory);
 
         Long activityId = memory.getId();
-        response = createMap.successMap(activityId);
+        response = CreateMap.successMap(activityId);
         System.out.println(response.get("result"));
         return response;
     }
@@ -124,7 +124,7 @@ public class ActivityService {
                 map(a -> new ActivityReturnDto(a))
                 .collect(Collectors.toList());
 
-        response = createMap.successMap(returnDtos);
+        response = CreateMap.successMap(returnDtos);
         return response;
     }
 

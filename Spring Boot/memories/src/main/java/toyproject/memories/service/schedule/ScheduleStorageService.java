@@ -13,9 +13,11 @@ import toyproject.memories.dto.schedule.ScheduleStorageListDto;
 import toyproject.memories.dto.schedule.ScheduleStorageReturnDto;
 import toyproject.memories.repository.UserRepository;
 import toyproject.memories.repository.schedule.ScheduleStorageRepository;
+import toyproject.memories.service.CreateMap;
 
 import java.time.DayOfWeek;
 import java.util.List;
+import java.util.Map;
 
 
 @Service
@@ -27,10 +29,13 @@ public class ScheduleStorageService {
     private final UserRepository userRepository;
 
     @Transactional
-    public ScheduleStorageReturnDto createScheduleStorage(ScheduleStorageCreateDto scheduleStorageCreateDto, String username){
+    public Map<String,Object> createScheduleStorage(ScheduleStorageCreateDto scheduleStorageCreateDto, String username){
 
         User user = userRepository.findByName(username).orElse(null);
 
+        if(user == null){
+            CreateMap.failMap("잘못된 사용자 정보 입니다.");
+        }
 
         ScheduleStorage scheduleStorage = new ScheduleStorage(
                 scheduleStorageCreateDto.getTitle(),
@@ -51,22 +56,42 @@ public class ScheduleStorageService {
             scheduleStorage.addScheduleItem(scheduleItemEntity);
         }
 
-        return scheduleStorageRepository.save(scheduleStorage);
+        return CreateMap.successMap(scheduleStorageRepository.save(scheduleStorage));
     }
 
-    public List<ScheduleStorageListDto> storageList(String username){
+    public Map<String,Object> storageList(String username){
         User user = userRepository.findByName(username).orElse(null);
-        return scheduleStorageRepository.findAllByUser(user);
+        if(user == null){
+            return CreateMap.failMap("잘못된 사용자 정보 입니다.");
+        }
+        else {
+            return CreateMap.successMap(scheduleStorageRepository.findAllByUser(user));
+        }
     }
 
-    public ScheduleStorageReturnDto storageDetail(Long id, String username){
+    public Map<String,Object> storageDetail(Long id, String username){
+        User user = userRepository.findByName(username).orElse(null);
+
+        ScheduleStorage storageReturn = scheduleStorageRepository.findOne(id,user)
+                .stream().findAny().orElse(null);
+
+        if(storageReturn != null)
+            return CreateMap.successMap(new ScheduleStorageReturnDto(storageReturn));
+        else
+            return CreateMap.failMap("해당 storage 를 찾을 수 없습니다.");
+    }
+
+    public Map<String,Object> storageDelete(Long id, String username){
         User user = userRepository.findByName(username).orElse(null);
 
         List<ScheduleStorage> storageReturn = scheduleStorageRepository.findOne(id,user);
 
-        if(!storageReturn.isEmpty())
-            return new ScheduleStorageReturnDto(storageReturn.stream().findAny().orElse(null));
+        if(!storageReturn.isEmpty()){
+            return CreateMap.successMap(storageReturn.stream().findFirst()
+                    .orElse(null)
+                    .getId());
+        }
         else
-            throw new RuntimeException();
+            return CreateMap.failMap("해당 storage 를 찾을 수 없습니다.");
     }
 }

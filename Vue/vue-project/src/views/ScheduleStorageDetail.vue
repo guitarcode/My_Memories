@@ -111,16 +111,13 @@ export default {
   },
     beforeCreate() {
       const id = this.$route.query.id
-      const url = "schedule/storage/"+id
+      const url = "/schedule/storage/"+id
       axiosInst.get(url)
       .then((response) => {
-        const resData = response.data
-        const items = resData.items
-
-        console.log(this.calendar)
-
-        let events = this.parseItem(items)
-        this.calendarOptions.events = events
+        if(response.data.result == "success")
+          this.calendarOptions.events = this.parseItem(response.data.data.items)
+        else
+          alert(response.data.message)
       })
       .catch((error)=>{
         console.log(error)
@@ -146,55 +143,37 @@ export default {
         handleEvents(events) {
           this.currentEvents = events
         },
+        parseDay(date) {
+          let start
+          if(date == "MONDAY"){
+                start = "2022-08-21"
+              }
+              else if (date == "TUESDAY"){
+                start = "2022-08-22"
+              }
+              else if (date == "WEDNESDAY"){
+                start = "2022-08-23"
+              }
+              else if (date == "THURSDAY"){
+                start = "2022-08-24"
+              }
+              else if (date == "FRIDAY"){
+                start = "2022-08-25"
+              }
+              else if (date == "SATURDAY"){
+                start = "2022-08-26"
+              }
+              else {
+                start = "2022-08-20"
+              }
+            return start
+        },
         parseItem(items){
           let events = []
           console.log(typeof(items))
             items.map((item) => {
-              let start
-              let end
-              if(item.startDay == "Mon"){
-                start = "2022-08-22"
-              }
-              else if (item.startDay == "Tue"){
-                start = "2022-08-23"
-              }
-              else if (item.startDay == "Wed"){
-                start = "2022-08-24"
-              }
-              else if (item.startDay == "Thu"){
-                start = "2022-08-25"
-              }
-              else if (item.startDay == "Fri"){
-                start = "2022-08-26"
-              }
-              else if (item.startDay == "Sat"){
-                start = "2022-08-27"
-              }
-              else {
-                start = "2022-08-21"
-              }
-
-              if(item.endDay == "Mon"){
-                end = "2022-08-22"
-              }
-              else if (item.endDay == "Tue"){
-                end = "2022-08-23"
-              }
-              else if (item.endDay == "Wed"){
-                end = "2022-08-24"
-              }
-              else if (item.endDay == "Thu"){
-                end = "2022-08-25"
-              }
-              else if (item.endDay == "Fri"){
-                end = "2022-08-26"
-              }
-              else if (item.endDay == "Sat"){
-                end = "2022-08-27"
-              }
-              else {
-                end = "2022-08-21"
-              }
+              let start = this.parseDay(item.startDay)
+              let end = this.parseDay(item.endDay)
               events.push({
                 title: item.title,
                 start: start+"T"+item.startTime+"-06:00",

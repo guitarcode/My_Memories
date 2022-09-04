@@ -63,7 +63,16 @@ export default {
     },
     currentEvents: [],
     title: "",
-    selectInfo: {}
+    selectInfo: {},
+    dayOfWeekParse: {
+      Mon: "MONDAY",
+      Tue: "TUESDAY",
+      Wed: "WEDNESDAY",
+      Thu: "THURSDAY",
+      Fri: "FRIDAY",
+      Sat: "SATURDAY",
+      Sun: "SUNDAY"
+    }
     }
   },
 
@@ -105,9 +114,9 @@ export default {
             const endInfo = event._instance.range.end.toString().split(" ");
 
             item.title = event._def.title;
-            item.startDay = startInfo[0];
+            item.startDay = this.dayOfWeekParse[startInfo[0]];
             item.startTime = startInfo[4];
-            item.endDay = endInfo[0];
+            item.endDay = this.dayOfWeekParse[endInfo[0]];
             item.endTime = endInfo[4];
             item.importance = event._def.extendedProps.importance
             return item;
@@ -124,13 +133,16 @@ export default {
                 "scheduleItems": items
             }
 
-            const url = "schedule/storage"
+            const url = "/schedule/storage"
 
             axiosInst.post(url, JSON.stringify(scheduleStorageItem), {
             })
             .then((response) => {
-                console.log(response)
+              if(response.data.result == "success")
                 this.$router.push("/schedule/storage")
+              else{
+                alert(response.data.message)
+              }
             })
             .catch(function(error) {
                 console.log(error)

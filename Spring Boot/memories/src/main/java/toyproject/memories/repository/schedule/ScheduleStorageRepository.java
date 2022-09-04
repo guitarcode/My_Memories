@@ -16,9 +16,9 @@ import java.util.stream.Collectors;
 public class ScheduleStorageRepository {
     private final EntityManager em;
 
-    public ScheduleStorageReturnDto save(ScheduleStorage scheduleStorage){
+    public Long save(ScheduleStorage scheduleStorage){
         em.persist(scheduleStorage);
-        return new ScheduleStorageReturnDto(scheduleStorage);
+        return scheduleStorage.getId();
     }
 
     public List<ScheduleStorageListDto> findAllByUser(User user){

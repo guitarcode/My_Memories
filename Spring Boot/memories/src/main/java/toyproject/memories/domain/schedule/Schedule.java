@@ -1,13 +1,17 @@
 package toyproject.memories.domain.schedule;
 
-import lombok.Builder;
+import lombok.*;
 import toyproject.memories.domain.user.User;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Entity
+@AllArgsConstructor @Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 public class Schedule {
     @Id
     @GeneratedValue
@@ -26,7 +30,6 @@ public class Schedule {
     @Column(name = "end_time")
     private LocalDateTime endDateTime;
 
-
     @Enumerated(EnumType.STRING)
     private Importance importance;
 
@@ -36,14 +39,4 @@ public class Schedule {
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
-    @Builder
-    public Schedule(String title, String subTitle, LocalDateTime startDateTime, LocalDateTime endDateTime, Importance importance, ScheduleStorage scheduleStorage, User user) {
-        this.title = title;
-        this.subTitle = subTitle;
-        this.startDateTime = startDateTime;
-        this.endDateTime = endDateTime;
-        this.importance = importance;
-        this.scheduleStorage = scheduleStorage;
-        this.user = user;
-    }
 }

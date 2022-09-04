@@ -32,9 +32,10 @@ export default {
     }
   },
   created() {
-    axiosInst.get("schedule/storage",{})
+    axiosInst.get("/schedule/storage",{})
     .then((response)=>{
-      this.storageList = response.data
+      console.log(response.data.data)
+      this.storageList = response.data.data
     })
     .catch((error)=>{
       console.log(error)

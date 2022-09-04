@@ -3,12 +3,12 @@ package toyproject.memories.service;
 import java.util.HashMap;
 import java.util.Map;
 
-public class createMap {
+public class CreateMap {
     //수행에 성공했을 때 성공 알림과 함께 object를 반환
     public static Map<String, Object> successMap(Object object){
         Map<String, Object> newMap = new HashMap<>();
         newMap.put("result","success");
-        newMap.put("response",object);
+        newMap.put("data",object);
         return newMap;
     }
 

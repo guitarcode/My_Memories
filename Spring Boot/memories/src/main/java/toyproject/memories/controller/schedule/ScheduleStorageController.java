@@ -11,30 +11,39 @@ import toyproject.memories.dto.schedule.ScheduleStorageReturnDto;
 import toyproject.memories.service.schedule.ScheduleStorageService;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
+@PreAuthorize("hasAnyRole('USER','ADMIN')")
+@RequestMapping("/api")
 public class ScheduleStorageController {
 
     private final ScheduleStorageService scheduleStorageService;
 
     @PostMapping("/schedule/storage")
-    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ScheduleStorageReturnDto create(@RequestBody ScheduleStorageCreateDto scheduleStorageCreateDto
-                                           ,@AuthenticationPrincipal User user){
+    public Map<String, Object> create(@RequestBody ScheduleStorageCreateDto scheduleStorageCreateDto
+                                           , @AuthenticationPrincipal User user){
         return scheduleStorageService.createScheduleStorage(scheduleStorageCreateDto, user.getUsername());
     }
 
     @GetMapping("/schedule/storage")
-    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public List<ScheduleStorageListDto> storageList(@AuthenticationPrincipal User user){
+    public Map<String, Object> storageList(@AuthenticationPrincipal User user){
         return scheduleStorageService.storageList(user.getUsername());
     }
 
     @GetMapping("/schedule/storage/{storageId}")
-    @PreAuthorize("hasAnyRole('USER')")
-    public ScheduleStorageReturnDto storageDetail(@PathVariable("storageId") Long id,
+    public Map<String, Object> storageDetail(@PathVariable("storageId") Long id,
                                                           @AuthenticationPrincipal User user){
         return scheduleStorageService.storageDetail(id, user.getUsername());
+    }
+
+//    @PatchMapping("/schedule/storage/{storageId}")
+//    public Map<String, Object> storageChange(@PathVariable("storageId") Long id, )
+
+    @DeleteMapping("/schedule/storage/{storageId}")
+    public Map<String, Object> storageDelete(@PathVariable("storageId") Long id,
+                                             @AuthenticationPrincipal User user){
+        return scheduleStorageService.storageDelete(id,user.getUsername());
     }
 }

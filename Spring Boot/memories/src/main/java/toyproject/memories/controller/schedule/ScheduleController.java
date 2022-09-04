@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import toyproject.memories.domain.schedule.Schedule;
+import toyproject.memories.dto.schedule.ScheduleReturnDto;
 import toyproject.memories.repository.schedule.WeeklyScheduleCreateDto;
 import toyproject.memories.service.schedule.ScheduleService;
 
@@ -23,8 +24,8 @@ public class ScheduleController {
 
     @PostMapping("/schedule")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public List<Schedule> createWeeklySchedule(@RequestBody WeeklyScheduleCreateDto weeklyScheduleCreateDto,
-                                 @AuthenticationPrincipal User user){
+    public List<ScheduleReturnDto> createWeeklySchedule(@RequestBody WeeklyScheduleCreateDto weeklyScheduleCreateDto,
+                                                        @AuthenticationPrincipal User user){
         return scheduleService.createWeeklySchedule(weeklyScheduleCreateDto, user.getUsername());
     }
 }

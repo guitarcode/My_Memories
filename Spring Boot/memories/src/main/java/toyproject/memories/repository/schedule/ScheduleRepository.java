@@ -3,8 +3,10 @@ package toyproject.memories.repository.schedule;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import toyproject.memories.domain.schedule.Schedule;
+import toyproject.memories.dto.schedule.ScheduleReturnDto;
 
 import javax.persistence.EntityManager;
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -13,10 +15,13 @@ public class ScheduleRepository {
 
     private final EntityManager em;
 
-    public List<Schedule> saveSchedules(List<Schedule> schedules){
+    public List<ScheduleReturnDto> saveSchedules(List<Schedule> schedules){
+        List<ScheduleReturnDto> res = new ArrayList<>();
+
         for (Schedule schedule : schedules) {
             em.persist(schedule);
+            res.add(new ScheduleReturnDto(schedule));
         }
-        return schedules;
+        return res;
     }
 }
