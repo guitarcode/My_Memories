@@ -10,12 +10,14 @@ import toyproject.memories.repository.UserRepository;
 import toyproject.memories.repository.schedule.ScheduleRepository;
 import toyproject.memories.repository.schedule.ScheduleStorageRepository;
 import toyproject.memories.repository.schedule.WeeklyScheduleCreateDto;
+import toyproject.memories.service.CreateMap;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 @Service
@@ -28,7 +30,7 @@ public class ScheduleService {
     private final UserRepository userRepository;
 
     @Transactional
-    public List<ScheduleReturnDto> createWeeklySchedule(WeeklyScheduleCreateDto weeklyScheduleCreateDto, String username){
+    public Map<String,Object> createWeeklySchedule(WeeklyScheduleCreateDto weeklyScheduleCreateDto, String username){
         User user = userRepository.findByName(username).orElse(null);
 
         ScheduleStorage scheduleStorage = scheduleStorageRepository.findOne(
@@ -68,11 +70,11 @@ public class ScheduleService {
                     itemStartDateTime = itemStartDateTime.plusDays(7L);
                 }
             }
+            return CreateMap.successMap(scheduleRepository.saveSchedules(schedules));
         }
         else{
-
+            return CreateMap.failMap("Bad Request");
         }
-        return scheduleRepository.saveSchedules(schedules);
     }
 
 }

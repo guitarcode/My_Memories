@@ -18,5 +18,4 @@ public class ScheduleReturnDto {
         this.end = schedule.getEndDateTime().toString();
         this.importance = schedule.getImportance().name();
     }
-
 }

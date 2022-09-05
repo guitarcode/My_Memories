@@ -48,4 +48,13 @@ public class ScheduleItem {
         this.storage = scheduleStorage;
         this.user = scheduleStorage.getUser();
     }
+
+    public void change(String title, DayOfWeek startDay, DayOfWeek endDay, LocalTime startTime, LocalTime endTime, Importance importance) {
+        this.title = title;
+        this.startDay = startDay;
+        this.endDay = endDay;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.importance = importance;
+    }
 }

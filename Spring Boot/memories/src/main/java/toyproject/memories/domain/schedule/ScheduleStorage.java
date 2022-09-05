@@ -37,4 +37,8 @@ public class ScheduleStorage {
         this.scheduleItems.add(scheduleItem);
         scheduleItem.setStorageAndUser(this);
     }
+
+    public void change(String title){
+        this.title = title;
+    }
 }

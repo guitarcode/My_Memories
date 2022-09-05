@@ -175,10 +175,15 @@ export default {
               let start = this.parseDay(item.startDay)
               let end = this.parseDay(item.endDay)
               events.push({
+                id: item.id,
                 title: item.title,
                 start: start+"T"+item.startTime+"-06:00",
-                end: end+"T"+item.endTime,
-                allDay: false
+                end: end+"T"+item.endTime+"-06:00",
+                allDay: false,
+                extendedProps: {
+                  dbId : item.id,
+                  importance: item.importance
+                }
               })
             })
 

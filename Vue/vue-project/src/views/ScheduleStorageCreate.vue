@@ -38,8 +38,10 @@ export default {
   data() {
     return {
       calendarOptions: {
+        timeZone: 'UTC',
         plugins: [ timeGridPlugin, interactionPlugin ],
         initialView: 'timeGridWeek',
+        timeZone: 'UTC',
         headerToolbar: false,
         allDaySlot: false,
         eventOverlap: false,

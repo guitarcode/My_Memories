@@ -38,13 +38,4 @@ public class ScheduleItemCreateDto {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
         return LocalTime.parse(this.endTime, formatter);
     }
-
-    public ScheduleItemCreateDto(ScheduleItem scheduleItem) {
-        this.title = scheduleItem.getTitle();
-        this.startTime = scheduleItem.getStartTime().toString();
-        this.endTime = scheduleItem.getEndTime().toString();
-        this.startDay = scheduleItem.getStartDay().name();
-        this.endDay = scheduleItem.getEndDay().name();
-        this.importance = scheduleItem.getImportance().name();
-    }
 }

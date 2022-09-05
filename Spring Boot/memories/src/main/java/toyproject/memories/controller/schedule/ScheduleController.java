@@ -14,6 +14,7 @@ import toyproject.memories.repository.schedule.WeeklyScheduleCreateDto;
 import toyproject.memories.service.schedule.ScheduleService;
 
 import java.util.List;
+import java.util.Map;
 
 @RequestMapping("/api")
 @RestController
@@ -24,8 +25,8 @@ public class ScheduleController {
 
     @PostMapping("/schedule")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public List<ScheduleReturnDto> createWeeklySchedule(@RequestBody WeeklyScheduleCreateDto weeklyScheduleCreateDto,
-                                                        @AuthenticationPrincipal User user){
+    public Map<String, Object> createWeeklySchedule(@RequestBody WeeklyScheduleCreateDto weeklyScheduleCreateDto,
+                                                    @AuthenticationPrincipal User user){
         return scheduleService.createWeeklySchedule(weeklyScheduleCreateDto, user.getUsername());
     }
 }

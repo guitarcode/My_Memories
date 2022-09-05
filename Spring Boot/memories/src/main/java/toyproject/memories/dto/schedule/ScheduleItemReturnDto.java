@@ -8,39 +8,23 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 @Getter
-public class ScheduleItemChangeDto {
-    @NotEmpty
-    private Long itemId;
+public class ScheduleItemReturnDto {
 
-    @NotEmpty
+    private Long id;
+
     private String title;
 
-    @NotEmpty
+    private String startDay;
     private String startTime;
 
-    @NotEmpty
+    private String endDay;
     private String endTime;
 
-    @NotEmpty
-    private String endDay;
-
-    @NotEmpty
-    private String startDay;
-
-    @NotEmpty
     private String importance;
 
-    public LocalTime startTimeParse(){
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-        return LocalTime.parse(this.startTime, formatter);
-    }
 
-    public LocalTime endTimeParse(){
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-        return LocalTime.parse(this.endTime, formatter);
-    }
-
-    public ScheduleItemChangeDto(ScheduleItem scheduleItem) {
+    public ScheduleItemReturnDto(ScheduleItem scheduleItem) {
+        this.id = scheduleItem.getId();
         this.title = scheduleItem.getTitle();
         this.startTime = scheduleItem.getStartTime().toString();
         this.endTime = scheduleItem.getEndTime().toString();

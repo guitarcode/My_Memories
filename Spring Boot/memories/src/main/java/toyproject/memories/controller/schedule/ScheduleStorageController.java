@@ -5,12 +5,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
+import toyproject.memories.dto.schedule.ScheduleStorageChangeDto;
 import toyproject.memories.dto.schedule.ScheduleStorageCreateDto;
-import toyproject.memories.dto.schedule.ScheduleStorageListDto;
-import toyproject.memories.dto.schedule.ScheduleStorageReturnDto;
 import toyproject.memories.service.schedule.ScheduleStorageService;
 
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -38,8 +36,11 @@ public class ScheduleStorageController {
         return scheduleStorageService.storageDetail(id, user.getUsername());
     }
 
-//    @PatchMapping("/schedule/storage/{storageId}")
-//    public Map<String, Object> storageChange(@PathVariable("storageId") Long id, )
+    @PutMapping("/schedule/storage")
+    public Map<String, Object> storageChange(@RequestBody ScheduleStorageChangeDto scheduleStorageChangeDto,
+                                             @AuthenticationPrincipal User user){
+        return scheduleStorageService.storageChange(scheduleStorageChangeDto, user.getUsername());
+    }
 
     @DeleteMapping("/schedule/storage/{storageId}")
     public Map<String, Object> storageDelete(@PathVariable("storageId") Long id,
