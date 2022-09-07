@@ -45,6 +45,7 @@ export default {
     items: [
         { title: 'Home', icon: 'mdi-image', to: "/"},
         { title: 'Schedule Items', icon: 'mdi-view-dashboard', to: "/schedule/storage"},
+        { title: 'My Schedule', icon: 'mdi-view-dashboard', to: '/schedule'}
       ],
       right: null,
     }

@@ -5,8 +5,10 @@ import HomeVue from '@/views/HomeVue'
 import ScheduleStorageList from '@/views/ScheduleStorageList'
 import ScheduleStorageCreate from '@/views/ScheduleStorageCreate'
 import ScheduleStorageDetail from '@/views/ScheduleStorageDetail'
+import ScheduleView from '@/views/ScheduleView'
 import SignUp from '@/views/SignUp'
 import LogIn from '@/views/LogIn'
+
 
 Vue.use(VueRouter)
 
@@ -43,6 +45,11 @@ const routes = [
       path: '/schedule/storage/detail',
       name: "ScheduleStorageDetail",
       component: ScheduleStorageDetail
+    },
+    {
+      path: '/schedule',
+      name: 'ScheduleView',
+      component: ScheduleView
     }
 ]
 
