@@ -24,6 +24,7 @@
 
 <script>
 import axiosInst from '@/api'
+
 export default {
   data() {
     return{

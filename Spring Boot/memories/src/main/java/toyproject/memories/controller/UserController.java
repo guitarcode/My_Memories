@@ -1,10 +1,7 @@
 package toyproject.memories.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import toyproject.memories.domain.user.User;
 import toyproject.memories.dto.MemberSignupDto;
 import toyproject.memories.service.MemberService;
@@ -13,6 +10,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
+//@RequestMapping("/api")
 public class UserController {
 
     private final MemberService memberService;

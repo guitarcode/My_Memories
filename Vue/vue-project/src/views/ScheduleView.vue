@@ -6,22 +6,24 @@
           :options="calendarOptions"
         />
       </v-col>
-      <v-col
-        sm="2"
-      >
+      <v-col cols="2">
         <v-card>
-          <v-card
+          <v-card-actions
             v-for="storage in storageList"
-            :key="storage.title"
+            :key="storage.id"
             outlined
             width="120"
-            @click="$router.push({path:'/schedule/storage/detail', query: {id: storage.id}})"
+            @click="openDialog(storage.id)"
           >
             {{ storage.title }}
-          </v-card>
+          </v-card-actions>
         </v-card>
       </v-col>
     </v-row>
+    <RecurringScheduleDialog
+      ref="weeklyDialog"
+      :selected-id="selected"
+    />
   </v-container>
 </template>
 
@@ -32,11 +34,13 @@ import timeGridPlugin from '@fullcalendar/timegrid'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import axiosInst from '@/api'
+import RecurringScheduleDialog from './RecurringScheduleDialog.vue'
 
 export default {
   components: {
     FullCalendar,
-  },
+    RecurringScheduleDialog
+},
 
   data() {
     return {
@@ -83,7 +87,8 @@ export default {
       Fri: "FRIDAY",
       Sat: "SATURDAY",
       Sun: "SUNDAY"
-    }
+    },
+    selected:0
     }
   },
   created() {
@@ -97,77 +102,81 @@ export default {
     })
   },
     methods: {
-        handleDateSelect(selectInfo) {
-          let calendarApi = selectInfo.view.calendar;
-          calendarApi.unselect()
+      openDialog(id){
+        this.$refs.weeklyDialog.dialog = true
+        this.selected=id
+      },
+      handleDateSelect(selectInfo) {
+        let calendarApi = selectInfo.view.calendar;
+        calendarApi.unselect()
 
-          this.selectInfo = selectInfo
-          console.log(this.selectInfo)
-          this.$refs.itemDialog.dialogActivate()
-        },
-        createEvent(title, importance) {
+        this.selectInfo = selectInfo
+        console.log(this.selectInfo)
+        this.$refs.itemDialog.dialogActivate()
+      },
+      createEvent(title, importance) {
 
-            if(title) {
-                this.selectInfo.view.calendar.addEvent({
-                    title: title,
-                    start: this.selectInfo.startStr,
-                    end: this.selectInfo.endStr,
-                    allDay: this.selectInfo.allDay,
-                    extendedProps: {
-                      importance: importance
-                    }
-                })
+          if(title) {
+              this.selectInfo.view.calendar.addEvent({
+                  title: title,
+                  start: this.selectInfo.startStr,
+                  end: this.selectInfo.endStr,
+                  allDay: this.selectInfo.allDay,
+                  extendedProps: {
+                    importance: importance
+                  }
+              })
+          }
+
+          console.log()
+          this.selectInfo = {}
+      },
+      handleEvents(events) {
+          this.currentEvents = events
+      },
+
+      parseEvent(){
+        const items = this.currentEvents.map(event=>{
+          let item = {};
+
+          const startInfo = event._instance.range.start.toString().split(" ");
+          const endInfo = event._instance.range.end.toString().split(" ");
+
+          item.title = event._def.title;
+          item.startDay = this.dayOfWeekParse[startInfo[0]];
+          item.startTime = startInfo[4];
+          item.endDay = this.dayOfWeekParse[endInfo[0]];
+          item.endTime = endInfo[4];
+          item.importance = event._def.extendedProps.importance
+          return item;
+          })
+
+          return items;
+      },
+
+      saveItems(title){
+          const items = this.parseEvent();
+
+          const scheduleStorageItem = {
+              "title": title,
+              "scheduleItems": items
+          }
+
+          const url = "/schedule/storage"
+
+          axiosInst.post(url, JSON.stringify(scheduleStorageItem), {
+          })
+          .then((response) => {
+            if(response.data.result == "success")
+              this.$router.push("/schedule/storage")
+            else{
+              alert(response.data.message)
             }
-
-            console.log()
-            this.selectInfo = {}
-        },
-        handleEvents(events) {
-            this.currentEvents = events
-        },
-
-        parseEvent(){
-          const items = this.currentEvents.map(event=>{
-            let item = {};
-
-            const startInfo = event._instance.range.start.toString().split(" ");
-            const endInfo = event._instance.range.end.toString().split(" ");
-
-            item.title = event._def.title;
-            item.startDay = this.dayOfWeekParse[startInfo[0]];
-            item.startTime = startInfo[4];
-            item.endDay = this.dayOfWeekParse[endInfo[0]];
-            item.endTime = endInfo[4];
-            item.importance = event._def.extendedProps.importance
-            return item;
-            })
-
-            return items;
-        },
-
-        saveItems(title){
-            const items = this.parseEvent();
-
-            const scheduleStorageItem = {
-                "title": title,
-                "scheduleItems": items
-            }
-
-            const url = "/schedule/storage"
-
-            axiosInst.post(url, JSON.stringify(scheduleStorageItem), {
-            })
-            .then((response) => {
-              if(response.data.result == "success")
-                this.$router.push("/schedule/storage")
-              else{
-                alert(response.data.message)
-              }
-            })
-            .catch(function(error) {
-                console.log(error)
-            })
-        }
+          })
+          .catch(function(error) {
+              console.log(error)
+          })
+      }
     }
 }
 

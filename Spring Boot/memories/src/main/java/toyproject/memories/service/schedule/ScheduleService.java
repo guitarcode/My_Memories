@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import toyproject.memories.domain.schedule.*;
 import toyproject.memories.domain.user.User;
-import toyproject.memories.dto.schedule.ScheduleReturnDto;
 import toyproject.memories.repository.UserRepository;
 import toyproject.memories.repository.schedule.ScheduleRepository;
 import toyproject.memories.repository.schedule.ScheduleStorageRepository;
@@ -34,11 +33,12 @@ public class ScheduleService {
         User user = userRepository.findByName(username).orElse(null);
 
         ScheduleStorage scheduleStorage = scheduleStorageRepository.findOne(
-                weeklyScheduleCreateDto.getStorage_id(),user
+                weeklyScheduleCreateDto.getStorageId(),user
         ).stream().findAny().orElse(null);
 
         List<Schedule> schedules = new ArrayList<>();
 
+        System.out.println(scheduleStorage.getId());
         if(scheduleStorage != null){
             //방법1. 요일별로 아이템을 분류
             //시작일 부터 7번의 반복문

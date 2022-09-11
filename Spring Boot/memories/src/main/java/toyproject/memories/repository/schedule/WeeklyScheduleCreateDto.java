@@ -4,7 +4,7 @@ import lombok.Getter;
 
 @Getter
 public class WeeklyScheduleCreateDto {
-    private Long storage_id;
+    private Long storageId;
     private String startDay;
     private String endDay;
 }

@@ -6,12 +6,10 @@
         max-width="400"
       >
         <template
-          #activator="{ on, attrs }"
+          #activator="{ on }"
         >
           <v-btn
             color="primary"
-            v-bind="attrs"
-
             v-on="on"
           >
             Save
