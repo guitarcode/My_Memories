@@ -3,6 +3,7 @@ package toyproject.memories.repository.schedule;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import toyproject.memories.domain.schedule.Schedule;
+import toyproject.memories.domain.user.User;
 import toyproject.memories.dto.schedule.ScheduleReturnDto;
 
 import javax.persistence.EntityManager;
@@ -23,5 +24,12 @@ public class ScheduleRepository {
             res.add(new ScheduleReturnDto(schedule));
         }
         return res;
+    }
+
+    public List<Schedule> findAll(User user){
+        return em.createQuery("select s from Schedule s " +
+                "where s.user = :user", Schedule.class)
+                .setParameter("user", user)
+                .getResultList();
     }
 }

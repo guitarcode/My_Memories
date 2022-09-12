@@ -44,140 +44,153 @@ export default {
 
   data() {
     return {
-      calendarOptions: {
-        plugins: [
-          dayGridPlugin,
-          timeGridPlugin,
-          interactionPlugin // needed for dateClick
-        ],
-        headerToolbar: {
-          left: 'prev,next today',
-          center: 'title',
-          right: 'dayGridMonth,timeGridWeek,timeGridDay'
-        },
-        initialView: 'timeGridWeek',
-        allDaySlot: false,
-        eventOverlap: false,
-        selectOverlap: false,
-        dayHeaderFormat:{
-          weekday: 'short'
-        },
-        eventTimeFormat: { // like '14:30:00'
-            hour: "2-digit",
-            minute: '2-digit',
-            hour12: true
-        },
-        dateClick: this.handleDateclick,
+    calendarOptions: {
+      plugins: [
+        dayGridPlugin,
+        timeGridPlugin,
+        interactionPlugin // needed for dateClick
+      ],
+      headerToolbar: {
+        left: 'prev,next today',
+        center: 'title',
+        right: 'dayGridMonth,timeGridWeek,timeGridDay'
+      },
+      initialView: 'timeGridWeek',
+      allDaySlot: false,
+      eventOverlap: false,
+      selectOverlap: false,
+      dayHeaderFormat:{
+        weekday: 'short'
+      },
+      eventTimeFormat: { // like '14:30:00'
+          hour: "2-digit",
+          hour12: true
+      },
+      dateClick: this.handleDateclick,
+      events: [],
       editable: true,
       droppable: true,
       selectable: true,
-    //   eventsSet:
       select: this.handleDateSelect,
       eventsSet: this.handleEvents
     },
     storageList: [],
     currentEvents: [],
-    title: "",
     selectInfo: {},
-    dayOfWeekParse: {
-      Mon: "MONDAY",
-      Tue: "TUESDAY",
-      Wed: "WEDNESDAY",
-      Thu: "THURSDAY",
-      Fri: "FRIDAY",
-      Sat: "SATURDAY",
-      Sun: "SUNDAY"
-    },
     selected:0
     }
   },
-  created() {
+
+  beforeCreate() {
     axiosInst.get("/schedule/storage",{})
     .then((response)=>{
-      console.log(response.data.data)
       this.storageList = response.data.data
     })
     .catch((error)=>{
       console.log(error)
     })
+      const url = "/schedule"
+      axiosInst.get(url)
+      .then((response) => {
+        if(response.data.result == "success")
+          this.calendarOptions.events = this.parseSchedule(response.data.data)
+        else
+          alert(response.data.message)
+      })
+      .catch((error)=>{
+        console.log(error)
+      })
   },
-    methods: {
-      openDialog(id){
-        this.$refs.weeklyDialog.dialog = true
-        this.selected=id
-      },
-      handleDateSelect(selectInfo) {
-        let calendarApi = selectInfo.view.calendar;
-        calendarApi.unselect()
 
-        this.selectInfo = selectInfo
-        console.log(this.selectInfo)
-        this.$refs.itemDialog.dialogActivate()
-      },
-      createEvent(title, importance) {
+  beforeUpdate() {
+      const url = "/schedule"
+      axiosInst.get(url)
+      .then((response) => {
+        if(response.data.result == "success")
+          this.title = response.data.data.title,
+          this.calendarOptions.events = this.parseSchedule(response.data.data)
+        else
+          alert(response.data.message)
+      })
+      .catch((error)=>{
+        console.log(error)
+      })
+  },
 
-          if(title) {
-              this.selectInfo.view.calendar.addEvent({
-                  title: title,
-                  start: this.selectInfo.startStr,
-                  end: this.selectInfo.endStr,
-                  allDay: this.selectInfo.allDay,
-                  extendedProps: {
-                    importance: importance
-                  }
-              })
+  methods: {
+    openDialog(id){
+      this.$refs.weeklyDialog.dialog = true
+      this.selected=id
+    },
+    handleDateSelect(selectInfo) {
+      let calendarApi = selectInfo.view.calendar;
+      calendarApi.unselect()
+
+      this.selectInfo = selectInfo
+      console.log(this.selectInfo)
+      this.$refs.itemDialog.dialogActivate()
+    },
+    createEvent(title, importance) {
+
+        if(title) {
+            this.selectInfo.view.calendar.addEvent({
+                title: title,
+                start: this.selectInfo.startStr,
+                end: this.selectInfo.endStr,
+                allDay: this.selectInfo.allDay,
+                extendedProps: {
+                  importance: importance
+                }
+            })
+        }
+
+        console.log()
+        this.selectInfo = {}
+    },
+    handleEvents(events) {
+        this.currentEvents = events
+    },
+    parseSchedule(schedules) {
+      const events = schedules.map(schedule => {
+        let event = {
+          title: "",
+          start: "",
+          end: "",
+          extendedProps: {
+            importance: "",
+            subtitle: ""
           }
+        }
+        event.title = schedule.title
+        event.start = schedule.start + ":00-06:00"
+        event.end = schedule.end + ":00-06:00"
+        event.extendedProps.importance = schedule.importance
+        event.extendedProps.subtitle = schedule.subtitle
+        console.log(event)
+        return event
+      })
+      return events
+    },
+    parseEvent(){
+      const items = this.currentEvents.map(event=>{
+        let item = {};
 
-          console.log()
-          this.selectInfo = {}
-      },
-      handleEvents(events) {
-          this.currentEvents = events
-      },
+        const startInfo = event._instance.range.start.toString().split(" ");
+        const endInfo = event._instance.range.end.toString().split(" ");
 
-      parseEvent(){
-        const items = this.currentEvents.map(event=>{
-          let item = {};
+        item.title = event._def.title;
+        item.startDay = this.dayOfWeekParse[startInfo[0]];
+        item.startTime = startInfo[4];
+        item.endDay = this.dayOfWeekParse[endInfo[0]];
+        item.endTime = endInfo[4];
+        item.importance = event._def.extendedProps.importance
+        return item;
+        })
 
-          const startInfo = event._instance.range.start.toString().split(" ");
-          const endInfo = event._instance.range.end.toString().split(" ");
+        return items;
+    },
 
-          item.title = event._def.title;
-          item.startDay = this.dayOfWeekParse[startInfo[0]];
-          item.startTime = startInfo[4];
-          item.endDay = this.dayOfWeekParse[endInfo[0]];
-          item.endTime = endInfo[4];
-          item.importance = event._def.extendedProps.importance
-          return item;
-          })
-
-          return items;
-      },
-
-      saveItems(title){
-          const items = this.parseEvent();
-
-          const scheduleStorageItem = {
-              "title": title,
-              "scheduleItems": items
-          }
-
-          const url = "/schedule/storage"
-
-          axiosInst.post(url, JSON.stringify(scheduleStorageItem), {
-          })
-          .then((response) => {
-            if(response.data.result == "success")
-              this.$router.push("/schedule/storage")
-            else{
-              alert(response.data.message)
-            }
-          })
-          .catch(function(error) {
-              console.log(error)
-          })
-      }
-    }
+  }
 }
 
 </script>
