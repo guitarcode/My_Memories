@@ -40,6 +40,7 @@ export default {
   data() {
     return {
       calendarOptions: {
+
         plugins: [ timeGridPlugin, interactionPlugin ],
         initialView: 'timeGridWeek',
         headerToolbar: false,
@@ -125,25 +126,25 @@ export default {
         parseDay(date) {
           let start
           if(date == "MONDAY"){
-                start = "2022-08-21"
-              }
-              else if (date == "TUESDAY"){
                 start = "2022-08-22"
               }
-              else if (date == "WEDNESDAY"){
+              else if (date == "TUESDAY"){
                 start = "2022-08-23"
               }
-              else if (date == "THURSDAY"){
+              else if (date == "WEDNESDAY"){
                 start = "2022-08-24"
               }
-              else if (date == "FRIDAY"){
+              else if (date == "THURSDAY"){
                 start = "2022-08-25"
               }
-              else if (date == "SATURDAY"){
+              else if (date == "FRIDAY"){
                 start = "2022-08-26"
               }
+              else if (date == "SATURDAY"){
+                start = "2022-08-27"
+              }
               else {
-                start = "2022-08-20"
+                start = "2022-08-21"
               }
             return start
         },
@@ -156,8 +157,8 @@ export default {
               events.push({
                 id: item.id,
                 title: item.title,
-                start: start+"T"+item.startTime+"-06:00",
-                end: end+"T"+item.endTime+"-06:00",
+                start: start+"T"+item.startTime,
+                end: end+"T"+item.endTime,
                 allDay: false,
                 extendedProps: {
                   dbId : item.id,

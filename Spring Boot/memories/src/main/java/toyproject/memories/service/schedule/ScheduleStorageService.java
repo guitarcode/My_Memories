@@ -42,20 +42,8 @@ public class ScheduleStorageService {
                 scheduleStorageCreateDto.getTitle(),
                 user);
 
-
-        for(ScheduleItemCreateDto scheduleItem : scheduleStorageCreateDto.getScheduleItems()){
-            System.out.println("스케쥴 시작일:" + scheduleItem.getStartDay());
-            ScheduleItem scheduleItemEntity = ScheduleItem.builder()
-                    .title(scheduleItem.getTitle())
-                    .startTime(scheduleItem.startTimeParse())
-                    .endTime(scheduleItem.endTimeParse())
-                    .startDay(DayOfWeek.valueOf(scheduleItem.getStartDay()))
-                    .endDay(DayOfWeek.valueOf(scheduleItem.getEndDay()))
-                    .importance(Importance.valueOf(scheduleItem.getImportance()))
-                    .build();
-
-            scheduleStorage.addScheduleItem(scheduleItemEntity);
-        }
+        scheduleStorageCreateDto.getScheduleItems().forEach((item) ->
+            scheduleStorage.addScheduleItem(item.toEntity()));
 
         return CreateMap.successMap(scheduleStorageRepository.save(scheduleStorage));
     }

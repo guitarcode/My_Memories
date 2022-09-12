@@ -112,15 +112,16 @@ export default {
           const items = this.currentEvents.map(event=>{
             let item = {};
 
-            const startInfo = event._instance.range.start.toString().split(" ");
-            const endInfo = event._instance.range.end.toString().split(" ");
+            // const startInfo = event._instance.range.start.toString().split(" ");
+            // const endInfo = event._instance.range.end.toString().split(" ");
+            let startDateTime = new Date(event._instance.range.start).toISOString().slice(0,-1)
+            let endDateTime = new Date(event._instance.range.end).toISOString().slice(0,-1)
 
             item.title = event._def.title;
-            item.startDay = this.dayOfWeekParse[startInfo[0]];
-            item.startTime = startInfo[4];
-            item.endDay = this.dayOfWeekParse[endInfo[0]];
-            item.endTime = endInfo[4];
+            item.startDateTime = startDateTime;
+            item.endDateTime = endDateTime;
             item.importance = event._def.extendedProps.importance
+
             return item;
             })
 
