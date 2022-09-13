@@ -7,6 +7,9 @@ import toyproject.memories.domain.user.User;
 import toyproject.memories.dto.schedule.ScheduleReturnDto;
 
 import javax.persistence.EntityManager;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +27,17 @@ public class ScheduleRepository {
             res.add(new ScheduleReturnDto(schedule));
         }
         return res;
+    }
+
+    public boolean isOverlap(LocalDateTime startTime, LocalDateTime endTime){
+        List<Schedule> overlapSchedule = em.createQuery("select s from Schedule s " +
+                "where s.startDateTime between :startTime and :endTime " +
+                "or s.endDateTime between :startTime and :endTime", Schedule.class)
+                .setParameter("startTime",startTime)
+                .setParameter("endTime", endTime)
+                .getResultList();
+
+        return !overlapSchedule.isEmpty();
     }
 
     public List<Schedule> findAll(User user){

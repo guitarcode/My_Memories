@@ -40,28 +40,31 @@ public class ScheduleService {
 
         List<Schedule> schedules = new ArrayList<>();
 
-        System.out.println(scheduleStorage.getId());
         if(scheduleStorage != null){
-            //방법1. 요일별로 아이템을 분류
-            //시작일 부터 7번의 반복문
-            //2중 반복문으로 내부에 endDay 까지 7일씩 더해가는 반복문
-            //방법2. 아이템 반복문 돌면서
-            //즉각즉각 요일 정보 얻어와서 7씩 더해서 넣기
             LocalDate start = LocalDate.parse(weeklyScheduleCreateDto.getStartDay());
-            LocalDateTime end = LocalDate.parse(weeklyScheduleCreateDto.getEndDay()).atTime(0,0);
+            LocalDateTime end = LocalDate.parse(weeklyScheduleCreateDto.getEndDay()).atTime(23,59);
             DayOfWeek startDay = start.getDayOfWeek();
+
             for(ScheduleItem item : scheduleStorage.getScheduleItems()){
-                DayOfWeek itemStartDay = item.getStartDay();
+                long itemStartDay = item.getStartDay().getValue();
+                long itemEndDay = item.getEndDay().getValue();
+
                 //(아이템의 요일) - (요청받은 시작일의 요일) 만큼 시작날짜에 더해서 요일을 맞춤
-                LocalDateTime itemStartDateTime = start.plusDays((long)(itemStartDay.getValue()+7-startDay.getValue()) % 7)
-                        .atTime(item.getStartTime());
-                System.out.println("plusDay = " + (itemStartDay.getValue()+7-startDay.getValue()) % 7);
-                LocalDateTime itemEndDateTime = itemStartDateTime.toLocalDate()
-                        .plusDays(item.getEndDay().getValue() - start.getDayOfWeek().getValue())
-                        .atTime(item.getEndTime());
-                System.out.println("itemStartDateTime = " + itemStartDateTime);
-                System.out.println("itemEndDateTime = " + itemEndDateTime);
+                LocalDate startDate = start.plusDays((itemStartDay+7-startDay.getValue()) % 7);
+                //(아이템의 end 요일) - (아이템의 start 요일)로 요일을 맞춤
+                LocalDate endDate = startDate.plusDays(itemEndDay-itemStartDay);
+
+                LocalDateTime itemStartDateTime = startDate.atTime(item.getStartTime());
+                LocalDateTime itemEndDateTime = endDate.atTime(item.getEndTime());
+
+
+
                 while(itemStartDateTime.isBefore(end)){
+                    if(scheduleRepository.isOverlap(itemStartDateTime,itemEndDateTime)) {
+                        itemStartDateTime = itemStartDateTime.plusDays(7L);
+                        itemEndDateTime = itemEndDateTime.plusDays(7L);
+                        continue;
+                    }
                     Schedule schedule = Schedule.builder()
                             .title(item.getTitle())
                             .subTitle(scheduleStorage.getTitle())
@@ -82,6 +85,7 @@ public class ScheduleService {
             return CreateMap.failMap("Bad Request");
         }
     }
+
 
     public List<ScheduleReturnDto> scheduleList(String username){
         User user = userRepository.findByName(username).orElse(null);

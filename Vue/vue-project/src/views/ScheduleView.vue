@@ -102,20 +102,20 @@ export default {
       })
   },
 
-  beforeUpdate() {
-      const url = "/schedule"
-      axiosInst.get(url)
-      .then((response) => {
-        if(response.data.result == "success")
-          this.title = response.data.data.title,
-          this.calendarOptions.events = this.parseSchedule(response.data.data)
-        else
-          alert(response.data.message)
-      })
-      .catch((error)=>{
-        console.log(error)
-      })
-  },
+  // beforeUpdate() {
+  //     const url = "/schedule"
+  //     axiosInst.get(url)
+  //     .then((response) => {
+  //       if(response.data.result == "success")
+  //         this.title = response.data.data.title,
+  //         this.calendarOptions.events = this.parseSchedule(response.data.data)
+  //       else
+  //         alert(response.data.message)
+  //     })
+  //     .catch((error)=>{
+  //       console.log(error)
+  //     })
+  // },
 
   methods: {
     openDialog(id){
@@ -162,8 +162,8 @@ export default {
           }
         }
         event.title = schedule.title
-        event.start = schedule.start + ":00-06:00"
-        event.end = schedule.end + ":00-06:00"
+        event.start = schedule.start
+        event.end = schedule.end
         event.extendedProps.importance = schedule.importance
         event.extendedProps.subtitle = schedule.subtitle
         console.log(event)
